@@ -1,5 +1,5 @@
 var allowStartingTimer;
-var timesArray = JSON.parse(loadLocal("olltimesarray", "[]"));
+var timesArray = JSON.parse(loadLocal("plltimesarray", "[]"));
 if (timesArray == null) // todo fix when figure out why JSON.parse("[]") returns 0
     timesArray = [];
 var lastScramble = "";
@@ -13,7 +13,7 @@ function showScramble()
     window.allowStartingTimer = false;
     var s;
     if (window.selCases.length == 0) {
-        s = "click \"select cases\" above and pick some OLLs to practice";
+        s = "click \"select cases\" above and pick some plls to practice";
         document.getElementById("selInfo").innerHTML = "";
     }
     else {
@@ -56,7 +56,7 @@ function generateScramble()
 {
     if (window.lastScramble != "")
         document.getElementById("last_scramble").innerHTML = "last scramble: " + window.lastScramble +
-            " <span onclick='displayBox(event,"+lastCase+")' class='ollNameStats'>("+algsInfo[lastCase]["name"] + ") </span><a class='settings' onclick='confirmUnsel("+lastCase+")' style='color:"+document.getElementById( "linkscolor_in" ).value+";'>unselect</a>";
+            " <span onclick='displayBox(event,"+lastCase+")' class='pllNameStats'>("+algsInfo[lastCase]["name"] + ") </span><a class='settings' onclick='confirmUnsel("+lastCase+")' style='color:"+document.getElementById( "linkscolor_in" ).value+";'>unselect</a>";
     displayPracticeInfo();
     // get random case
     var caseNum = 0;
@@ -70,7 +70,7 @@ function generateScramble()
         window.recapArray.splice(index, 1);
 
     }
-    var alg = randomElement(window.ollMap[caseNum]);
+    var alg = randomElement(window.pllMap[caseNum]);
     var rotation = randomElement(["", "y", "y2", "y'"]);
     var finalAlg = alg
 
@@ -394,7 +394,7 @@ function displayBox(event,i) {
     document.getElementById("boxalg").innerHTML = algsInfo[i]["a"];
     if (algsInfo[i]["a2"] != "")
         document.getElementById("boxalg").innerHTML += "<br><br>" + algsInfo[i]["a2"];
-    //document.getElementById("boxsetup").innerHTML = "Setup: " + window.ollMap[i][0];
+    //document.getElementById("boxsetup").innerHTML = "Setup: " + window.pllMap[i][0];
     document.getElementById("boxsetup").innerHTML = "Setup: " + algsInfo[i]["a"];
     document.getElementById("boxImg").src="pic/"+i+".svg";
 }
@@ -421,7 +421,7 @@ function makeHtmlDisplayableTime(r)
 /// fills "times" right panel with times and last result info
 function displayStats()
 {
-    saveLocal("olltimesarray", JSON.stringify(window.timesArray));
+    saveLocal("plltimesarray", JSON.stringify(window.timesArray));
     var len = window.timesArray.length;
 
     var el = document.getElementById("times");
@@ -439,10 +439,10 @@ function displayStats()
         var resultsByCase = []; // [57: [...], 12: [...], ...];
         for (var i = 0; i < len; i++)
         {
-            var currentOll = window.timesArray[i]["case"];
-            if (resultsByCase[currentOll] == null)
-                resultsByCase[currentOll] = [];
-            resultsByCase[currentOll].push( window.timesArray[i] );
+            var currentpll = window.timesArray[i]["case"];
+            if (resultsByCase[currentpll] == null)
+                resultsByCase[currentpll] = [];
+            resultsByCase[currentpll].push( window.timesArray[i] );
         }
 
         var keys = Object.keys(resultsByCase);
@@ -451,21 +451,21 @@ function displayStats()
         var s = "";
         // allocate them inside times span
         for (var j = 0; j < keys.length; j++) {
-            var oll = keys[j];
+            var pll = keys[j];
             var timesString = "";
             var meanForCase = 0.0;
             var i = 0;
-            for (; i < resultsByCase[oll].length; i++)
+            for (; i < resultsByCase[pll].length; i++)
             {
-                timesString += makeHtmlDisplayableTime(resultsByCase[oll][i]);
-                if (i != resultsByCase[oll].length - 1)
+                timesString += makeHtmlDisplayableTime(resultsByCase[pll][i]);
+                if (i != resultsByCase[pll].length - 1)
                     timesString += ", ";
                 // avg
                 meanForCase *= i/(i+1);
-                meanForCase += resultsByCase[oll][i]["ms"] / (i+1);
+                meanForCase += resultsByCase[pll][i]["ms"] / (i+1);
             }
-            s += "<div class='ollNameHeader' " +
-            ")'><span class='ollNameStats' onclick='displayBox(event,"+keys[j]+")'>" + algsInfo[oll]["name"] + "</span>: " + msToHumanReadable(meanForCase) + "</div>" + timesString + "<br><br>";
+            s += "<div class='pllNameHeader' " +
+            ")'><span class='pllNameStats' onclick='displayBox(event,"+keys[j]+")'>" + algsInfo[pll]["name"] + "</span>: " + msToHumanReadable(meanForCase) + "</div>" + timesString + "<br><br>";
         }
         el.innerHTML = s;
     }

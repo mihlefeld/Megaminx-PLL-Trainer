@@ -1,4 +1,4 @@
-﻿var ollMap = {
+﻿var pllMap = {
   1: [
     "R U R' U2 R' U' R U' R U' R' U2 R' U R",
   ],

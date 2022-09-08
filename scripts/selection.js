@@ -7,7 +7,7 @@ function updateTitle() {
     document.getElementById("csi").innerHTML = window.selCases.length;
 }
 function itemClicked(i) {
-    if (window.ollMap[i] == null) {
+    if (window.pllMap[i] == null) {
         console.error("is null");
         return;
     }
@@ -47,7 +47,7 @@ function isAtLeastOneSelected(groupName) {
 }
 
 // select or deselect all cases in the group
-function selectOllGroup(name) {
+function selectPllGroup(name) {
     var aos = isAtLeastOneSelected(name);
     var indeces = algsGroups[name];
     for (i in indeces) {
@@ -66,7 +66,7 @@ function selectOllGroup(name) {
 function makeTrNormal(groupname) {
     var s = "";
     var indeces = algsGroups[groupname];
-    s += "<tr><td class='ollgrouptdUnsel' onclick='selectOllGroup(\""+groupname
+    s += "<tr><td class='pllgrouptdUnsel' onclick='selectPllGroup(\""+groupname
         +"\")' colspan='"+indeces.length+"'><b>" + groupname + "</b></td></tr>";
     s += "<tr>";
     for (var j = 0; j < indeces.length; j++) {
@@ -85,8 +85,8 @@ function makeTr42(gn1, gn2) {
     var s = '';
     var in1 = algsGroups[gn1], in2 = algsGroups[gn2];
     s += "<tr>"+
-        "<td class='ollgrouptdUnsel' onclick='selectOllGroup(\""+gn1 +"\")' colspan='"+in1.length+"'><b>" + gn1 + "</b></td>"+
-        "<td class='ollgrouptdUnsel' onclick='selectOllGroup(\""+gn2 +"\")' colspan='"+in2.length+"'><b>" + gn2 + "</b></td>"+
+        "<td class='pllgrouptdUnsel' onclick='selectPllGroup(\""+gn1 +"\")' colspan='"+in1.length+"'><b>" + gn1 + "</b></td>"+
+        "<td class='pllgrouptdUnsel' onclick='selectPllGroup(\""+gn2 +"\")' colspan='"+in2.length+"'><b>" + gn2 + "</b></td>"+
         "</tr>";
     s += "<tr>";
     for (var j = 0; j < in1.length; j++) {
@@ -107,14 +107,14 @@ function makeTr42(gn1, gn2) {
     return s;
 }
 
-/// iterates the ollMap and highlights HTML elements according to the selection
+/// iterates the pllMap and highlights HTML elements according to the selection
 function renderSelection()
 {
     var s="";
 
-    s += "<table class='olllayout'>";
+    s += "<table class='plllayout'>";
     //s += "<tr><a onclick='selectAllNone()'>select all or none</a>";
-    s += "<tr><td class='ollgrouptdUnsel' onclick='selectAllNone()' colspan='6'><b>All Cases (1)</b> | selected: <span id='csi'></span></td></tr>";
+    s += "<tr><td class='pllgrouptdUnsel' onclick='selectAllNone()' colspan='6'><b>All Cases (152)</b> | selected: <span id='csi'></span></td></tr>";
 
     s += makeTrNormal("Group A");
     s += makeTrNormal("Group B");
