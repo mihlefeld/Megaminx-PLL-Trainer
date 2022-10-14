@@ -37,6 +37,7 @@ PLL trainer
 			<td colspan="2">
 				<a onclick="adjustSize('timer', 8);">increase</a>/<a onclick="adjustSize('timer', -8);">decrease</a> timer size
 				<br><a onclick="adjustSize('scramble', 5);">increase</a>/<a onclick="adjustSize('scramble', -5);">decrease</a> scramble size
+				<br> <a onclick="setWeightedChoice();" id="weighted_coice_on_off">using</a> weighted choice (cases which haven't appeared as often are chosen more frequently)
 				<br>
                 colors (<a onclick='resetStyle(0)'>light</a>, <a onclick='resetStyle(1)'>dark</a>):
                 background <input type='text' value='#f5f5f5' class='settinginput' id='bgcolor_in' onchange="applystyle();" placeholder='#f5f5f5' maxlength='12'/>

@@ -4,6 +4,7 @@ if (timesArray == null) // todo fix when figure out why JSON.parse("[]") returns
     timesArray = [];
 var lastScramble = "";
 var lastCase = 0;
+var useWeightedChoice = false;
 
 displayStats(); // after loading
 
@@ -61,7 +62,42 @@ function generateScramble()
     // get random case
     var caseNum = 0;
     if (recapArray.length == 0) { // train
-        caseNum = randomElement(window.selCases);
+        if (window.useWeightedChoice) {
+            var selCasesCounts = []; // count how often each case has appeared already
+            for (var i = 0; i < window.selCases.length; i++) 
+            {
+                var count = 0;
+                var currentpll = window.selCases[i];
+                for (var j = 0; j< window.timesArray.length; j++) 
+                {
+                    if (window.timesArray[j]["case"] == currentpll)
+                        count += 1;
+                }
+                selCasesCounts.push(count);
+            }
+
+            var expectedCount = 0; // calculate how often each case "should have" appeared
+            for (var i = 0; i < selCasesCounts.length; i++)
+            {
+                expectedCount += selCasesCounts[i];
+            }
+            var expectedCount = expectedCount / window.selCases.length;
+            
+            var selCaseWeights = []; // calculate the weights with which the next case is to be chosen. weights are arranged cumulatively
+            for (var i = 0; i < selCasesCounts.length; i++) 
+            {
+                if (i == 0)
+                selCaseWeights.push(3.5 ** (- (selCasesCounts[i] - expectedCount)));
+                else
+                selCaseWeights.push(selCaseWeights[i-1] + 3.5 ** (- (selCasesCounts[i] - expectedCount)));
+            }
+            caseNum = weightedRandomElement(selCases, selCaseWeights)
+            
+            //console.log(selCasesCounts, expectedCount, selCaseWeights, caseNum);
+        }
+
+        else // random choice of next case
+            caseNum = randomElement(window.selCases);
     } else { // recap
         // select the case
         caseNum = randomElement(window.recapArray);
@@ -586,3 +622,48 @@ document.getElementById("bodyid").addEventListener("keydown", function(event) {
 
 loadstyle();
 applystyle();
+
+
+/* weightec choice settings*/
+
+// loads weighted choice setting 
+function loadWeightedChoice() {
+    try {
+        var useWC = localStorage.getItem('useweightedchoice');
+        if (useWC == "true") {
+            window.useWeightedChoice = true;
+        } else {
+            window.useWeightedChoice = false;
+        }
+        return true;
+    }
+    catch(e) { return false; }
+}
+
+// changes button text
+function applyWeightedChoice() {
+    if (window.useWeightedChoice) {
+        document.getElementById("weighted_coice_on_off").innerHTML = "using";
+    } else {
+        document.getElementById("weighted_coice_on_off").innerHTML = "not using";
+    }
+    saveWeightedChoice();
+}
+
+// saves the current wc setting
+function saveWeightedChoice() {
+    saveLocal("useweightedchoice", window.useWeightedChoice);
+}
+
+// changes the current setting from true/false to false/true
+function setWeightedChoice() {
+    if (window.useWeightedChoice)
+        window.useWeightedChoice = false;
+    else
+        window.useWeightedChoice = true;
+    applyWeightedChoice();
+    // console.log(useWeightedChoice);
+}
+
+loadWeightedChoice();
+applyWeightedChoice();
