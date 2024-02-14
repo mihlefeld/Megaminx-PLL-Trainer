@@ -9,8 +9,7 @@ var useWeightedChoice = false;
 displayStats(); // after loading
 
 /// invokes generateScramble() and sets scramble string
-function showScramble()
-{
+function showScramble() {
     window.allowStartingTimer = false;
     var s;
     if (window.selCases.length == 0) {
@@ -18,16 +17,15 @@ function showScramble()
         document.getElementById("selInfo").innerHTML = "";
     }
     else {
-        s = "scramble: " + generateScramble();
+        s = "Scramble: " + generateScramble();
         window.allowStartingTimer = true;
     }
 
     document.getElementById("scramble").innerHTML = s;
 }
 
-function randomElement(arr)
-{
-    return arr[Math.floor(Math.random()*arr.length)];
+function randomElement(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
 }
 
 function confirmUnsel(i) {
@@ -53,23 +51,20 @@ function displayPracticeInfo() {
     document.getElementById("selInfo").innerHTML = s;
 }
 
-function generateScramble()
-{
+function generateScramble() {
     if (window.lastScramble != "")
         document.getElementById("last_scramble").innerHTML = "last scramble: " + window.lastScramble +
-            " <span onclick='displayBox(event,"+lastCase+")' class='pllNameStats'>("+algsInfo[lastCase]["name"] + ") </span><a class='settings' onclick='confirmUnsel("+lastCase+")' style='color:"+document.getElementById( "linkscolor_in" ).value+";'>unselect</a>";
+            " <span onclick='displayBox(event," + lastCase + ")' class='pllNameStats'>(" + algsInfo[lastCase]["name"] + ") </span><a class='settings' onclick='confirmUnsel(" + lastCase + ")' style='color:" + document.getElementById("linkscolor_in").value + ";'>unselect</a>";
     displayPracticeInfo();
     // get random case
     var caseNum = 0;
     if (recapArray.length == 0) { // train
         if (window.useWeightedChoice) {
             var selCasesCounts = []; // count how often each case has appeared already
-            for (var i = 0; i < window.selCases.length; i++) 
-            {
+            for (var i = 0; i < window.selCases.length; i++) {
                 var count = 0;
                 var currentpll = window.selCases[i];
-                for (var j = 0; j< window.timesArray.length; j++) 
-                {
+                for (var j = 0; j < window.timesArray.length; j++) {
                     if (window.timesArray[j]["case"] == currentpll)
                         count += 1;
                 }
@@ -77,22 +72,20 @@ function generateScramble()
             }
 
             var expectedCount = 0; // calculate how often each case "should have" appeared
-            for (var i = 0; i < selCasesCounts.length; i++)
-            {
+            for (var i = 0; i < selCasesCounts.length; i++) {
                 expectedCount += selCasesCounts[i];
             }
             var expectedCount = expectedCount / window.selCases.length;
-            
+
             var selCaseWeights = []; // calculate the weights with which the next case is to be chosen. weights are arranged cumulatively
-            for (var i = 0; i < selCasesCounts.length; i++) 
-            {
+            for (var i = 0; i < selCasesCounts.length; i++) {
                 if (i == 0)
-                selCaseWeights.push(3.5 ** (- (selCasesCounts[i] - expectedCount)));
+                    selCaseWeights.push(3.5 ** (- (selCasesCounts[i] - expectedCount)));
                 else
-                selCaseWeights.push(selCaseWeights[i-1] + 3.5 ** (- (selCasesCounts[i] - expectedCount)));
+                    selCaseWeights.push(selCaseWeights[i - 1] + 3.5 ** (- (selCasesCounts[i] - expectedCount)));
             }
             caseNum = weightedRandomElement(selCases, selCaseWeights)
-            
+
             //console.log(selCasesCounts, expectedCount, selCaseWeights, caseNum);
         }
 
@@ -110,10 +103,6 @@ function generateScramble()
     var rotation = randomElement(["", " U", " U'", " U2", " U2'"]);
     var finalAlg = alg + rotation;
 
-    // for (var i = 1; i<=152; i++) {
-    //     console.log(window.pllMap[i][0] + ", " + window.pllMap[i][1] + ", " + window.pllMap[i][2] + ", " + window.pllMap[i][3] + ", ");
-    // }
-
     window.lastScramble = finalAlg;
     window.lastCase = caseNum;
 
@@ -121,58 +110,14 @@ function generateScramble()
 }
 
 // http://stackoverflow.com/questions/15604140/replace-multiple-strings-with-multiple-other-strings
-function replaceAll(str,mapObj) {
+function replaceAll(str, mapObj) {
     if (!mapObj)
         return str;
-    var re = new RegExp(Object.keys(mapObj).join("|"),"gi");
+    var re = new RegExp(Object.keys(mapObj).join("|"), "gi");
 
-    return str.replace(re, function(matched){
+    return str.replace(re, function (matched) {
         return mapObj[matched];
     });
-}
-
-// returns new string with transformed algorithm.
-// Returnes sequence of moves that get the cube to the same position as (alg + rot) does, but without cube rotations.
-// Example: applyRotationForAlgorithm("R U R'", "y") = "F U F'"
-/*function applyRotationForAlgorithm(alg, rot)
-{
-    var mapObj;
-    if (rot=="y")
-        mapObj = {R:"F",F:"L",L:"B",B:"R"};
-    if (rot=="y'")
-        mapObj = {R:"B",B:"L",L:"F",F:"R"};
-    if (rot=="y2")
-        mapObj = {R:"L",L:"R",B:"F",F:"B"};
-
-    return replaceAll(alg, mapObj);
-}
-
-/*function inverse_scramble(s)
-{
-	// deleting parantheses and double spaces
-    s = s.replaceAll('[', " ");
-    s = s.replaceAll(']', " ");
-    s = s.replaceAll('(', " ");
-    s = s.replaceAll(')', " ");
-    while(s.indexOf("  ") != -1)
-            s = s.replaceAll("  ", " ");
-
-    var arr = s.split(" ");
-    var result = "";
-    for (var i = 0; i < arr.length; i++)
-    {
-        var it = arr[i];
-        if (it.length == 0)
-            continue;
-        if (it[it.length - 1] == '2')
-            result = it + " " + result;
-        else if (it[it.length - 1] == '\'')
-            result = it.substr(0, it.length - 1) + " " + result;
-        else
-            result = it + "' " + result;
-    }
-
-    return result.substr(0, result.length-1);
 }
 
 /*        TIMER        */
@@ -184,8 +129,8 @@ var timer = document.getElementById("timer");
 
 function isMobile() {
     var check = false;
-    (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
-  return check;
+    (function (a) { if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) check = true; })(navigator.userAgent || navigator.vendor || window.opera);
+    return check;
 }
 
 welcomeMessage = isMobile() ? "touch to start" : "ready";
@@ -197,10 +142,10 @@ var timeout;
 function msToHumanReadable(duration) {
     if (!Number.isFinite(duration))
         return "-";
-    var milliseconds = parseInt((duration%1000)/10)
-        , seconds = parseInt((duration/1000)%60)
-        , minutes = parseInt((duration/(1000*60))%60)
-        , hours = parseInt((duration/(1000*60*60))%24);
+    var milliseconds = parseInt((duration % 1000) / 10)
+        , seconds = parseInt((duration / 1000) % 60)
+        , minutes = parseInt((duration / (1000 * 60)) % 60)
+        , hours = parseInt((duration / (1000 * 60 * 60)) % 24);
 
     hours = (hours < 10) ? "0" + hours : hours;
     minutes = (minutes < 10) ? "0" + minutes : minutes;
@@ -214,8 +159,7 @@ function msToHumanReadable(duration) {
 }
 
 function displayTime() {
-    if (running)
-    {
+    if (running) {
         var d = new Date();
         var diff = d.getTime() - window.startMilliseconds;
         if (diff >= 0)
@@ -224,10 +168,9 @@ function displayTime() {
 }
 
 /// handles keypup and keydown events. Starts timer etc.
-document.getElementById("bodyid").addEventListener("keydown", function(event) {
+document.getElementById("bodyid").addEventListener("keydown", function (event) {
     // delete hotkey - remove last
-    if (event.keyCode == 46 && !running)
-    {
+    if (event.keyCode == 46 && !running) {
         if (!!window.event.shiftKey)
             confirmClear();
         else
@@ -241,21 +184,19 @@ document.getElementById("bodyid").addEventListener("keydown", function(event) {
     if (event.keyCode != 16) // shift
         allowed = false;
 
-    if (running)
-    {
+    if (running) {
         // stop timer on any button
         timerStop();
         return;
     }
-    else if (event.keyCode == timerActivatingButton)
-    {
+    else if (event.keyCode == timerActivatingButton) {
         timerSetReady();
         return;
     }
 });
 
 /// keyup event for starting the timer
-document.getElementById("bodyid").addEventListener("keyup", function(event) {
+document.getElementById("bodyid").addEventListener("keyup", function (event) {
     allowed = true;
     if (!window.allowStartingTimer)
         return; // preventing auto-repeat
@@ -267,8 +208,9 @@ document.getElementById("bodyid").addEventListener("keyup", function(event) {
     }
 });
 
-timer.addEventListener("touchstart", handleTouchStart, false);
-timer.addEventListener("touchend", handleTouchEnd, false);
+timerDiv = document.getElementById("timerDiv")
+timerDiv.addEventListener("touchstart", handleTouchStart, false);
+timerDiv.addEventListener("touchend", handleTouchEnd, false);
 
 function handleTouchEnd() {
     if (!window.allowStartingTimer)
@@ -314,80 +256,89 @@ function timerStart() {
     startMilliseconds = d.getTime();
     running = true;
     timeout = setInterval(displayTime, 10);
-    timer.style.color = document.getElementById( "textcolor_in" ).value;
+    timer.style.color = document.getElementById("textcolor_in").value;
 }
 
 function timerAfterStop() {
-    timer.style.color = document.getElementById( "textcolor_in" ).value;
+    timer.style.color = document.getElementById("textcolor_in").value;
 }
 
 
 // sizes. Too tired, cannot produce normal code
-var defTimerSize = 60;
-var defScrambleSize = 25;
-var timerSize = parseInt(loadLocal("zblltimerSize", ""+defTimerSize));
+var defTimerSize = 5;
+var defScrambleSize = 2;
+var defBaseSize = 1.3;
+
+var timerSize = parseFloat(loadLocal("pllTimerSize", "" + defTimerSize));
 if (isNaN(timerSize) || timerSize <= 0)
     timerSize = defTimerSize;
-var scrambleSize = parseInt(loadLocal("zbllscrambleSize", ""+defTimerSize));
+
+var scrambleSize = parseFloat(loadLocal("pllScrambleSize", "" + defScrambleSize));
 if (isNaN(scrambleSize) || scrambleSize <= 0)
     scrambleSize = defScrambleSize;
 
+var baseSize = parseFloat(loadLocal("pllBaseSize", "" + defBaseSize));
+if (isNaN(baseSize) || baseSize <= 0)
+    baseSize = defBaseSize;
+
 adjustSize('scramble', 0);
 adjustSize('timer', 0);
+adjustSize('body', 0);
 
-function adjustSize(item, inc)
-{
-    if (item == 'timer')
-    {
+function adjustSize(item, inc) {
+    if (item == 'timer') {
         window.timerSize += inc
-        document.getElementById('timer').style.fontSize = window.timerSize + "px";
-        saveLocal("zblltimerSize", ""+window.timerSize);
+        document.getElementById('timer').style.fontSize = window.timerSize + "em";
+        saveLocal("pllTimerSize", "" + window.timerSize);
     }
 
-    if (item == 'scramble')
-    {
+    if (item == 'scramble') {
         window.scrambleSize += inc
-        document.getElementById('scramble').style.fontSize = window.scrambleSize + "px";
-        saveLocal("zbllscrambleSize", ""+window.scrambleSize);
+        document.getElementById('scramble').style.fontSize = window.scrambleSize + "em";
+        saveLocal("pllScrambleSize", "" + window.scrambleSize);
+    }
+    if (item == 'body') {
+        window.baseSize += inc
+        document.getElementById('bodyid').style.fontSize = window.baseSize + "em";
+        saveLocal("pllBaseSize", "" + window.baseSize);
     }
 }
 
-function resetDefaults()
-{
+function resetDefaults() {
     window.timerSize = defTimerSize;
     window.scrambleSize = defScrambleSize;
+    window.baseSize = baseSize;
     adjustSize('scramble', 0);
     adjustSize('timer', 0);
+    adjustSize('body', 0)
 }
 
 /* STATS */
 
 // http://stackoverflow.com/questions/1787322/htmlspecialchars-equivalent-in-javascript
 function escapeHtml(text) {
-  var map = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#039;'
-  };
+    var map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
 
-  return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    return text.replace(/[&<>"']/g, function (m) { return map[m]; });
 }
 
 /// [0: ResultInstance, 1: ResultInstance, ...]
 
 // invoked right after the timer stopped
-function appendStats()
-{
+function appendStats() {
     // assuming the time can be grabbed from timer label, and the case - window.lastCase
     window.timesArray.push(makeResultInstance());
     displayStats();
 }
 
 /// removes time from array and invokes displayStats()
-function removeTime(i)
-{
+function removeTime(i) {
     window.timesArray.splice(i, 1);
     displayStats();
 }
@@ -399,27 +350,23 @@ function updateInstancesIndeces() {
 }
 
 /// requests confirmation and deletes result
-function confirmRem(i)
-{
+function confirmRem(i) {
     var inst = window.timesArray[i];
-    if (confirm("Are you sure you want to remove this time?\n\n" + inst["time"]))
-    {
+    if (confirm("Are you sure you want to remove this time?\n\n" + inst["time"])) {
         removeTime(i);
         updateInstancesIndeces();
         displayStats();
     }
 }
 
-function confirmRemLast()
-{
+function confirmRemLast() {
     var i = window.timesArray.length;
     if (i != 0)
         confirmRem(i - 1);
 }
 
 /// requests confirmation and empty times array (clear session)
-function confirmClear()
-{
+function confirmClear() {
     if (confirm("Are you sure you want to clear session?")) {
         window.timesArray = [];
         document.getElementById('infoHeader').innerHTML = ('')
@@ -427,31 +374,29 @@ function confirmClear()
     }
 }
 
-function displayBox(event,i) {
-    document.getElementById("hintWindowBack").style.display='initial';
-    document.getElementById("hintWindow").style.display='initial';
+function displayBox(event, i) {
+    document.getElementById("hintWindowBack").style.display = 'initial';
+    document.getElementById("hintWindow").style.display = 'initial';
     document.getElementById("boxTitle").innerHTML = '#' + i + " " + algsInfo[i]["name"];
     document.getElementById("boxalg").innerHTML = algsInfo[i]["a"];
     if (algsInfo[i]["a2"] != "")
-        document.getElementById("boxalg").innerHTML += "<br><br>" + algsInfo[i]["a2"];
-    //document.getElementById("boxsetup").innerHTML = "Setup: " + window.pllMap[i][0];
-    document.getElementById("boxsetup").innerHTML = "Setup: " + algsInfo[i]["a"];
-    document.getElementById("boxImg").src="pic/"+i+".svg";
+        document.getElementById("boxalg").innerHTML += "<br>" + algsInfo[i]["a2"];
+    document.getElementById("boxsetup").innerHTML = algsInfo[i]["a"];
+    document.getElementById("boxImg").src = "pic/" + i + ".png";
 }
 
 function hideBox() {
-    document.getElementById("hintWindow").style.display='none';
-    document.getElementById("hintWindowBack").style.display='none';
+    document.getElementById("hintWindow").style.display = 'none';
+    document.getElementById("hintWindowBack").style.display = 'none';
 }
 
 /// \param r - result instance (see makeResultInstance)
 /// \returns html code for displaying the instance
-function makeHtmlDisplayableTime(r)
-{
+function makeHtmlDisplayableTime(r) {
     var classname = (r == window.timesArray[window.timesArray.length - 1]) ? "timeResultBold" : "timeResult";
-    return resultString = "<span class='"+ classname +"' title='" +
-            escapeHtml(r["details"]) +"' onclick='confirmRem("
-            + r["index"] + ")' >" + r["time"] + "</span>";
+    return resultString = "<span class='" + classname + "' title='" +
+        escapeHtml(r["details"]) + "' onclick='confirmRem("
+        + r["index"] + ")' >" + r["time"] + "</span>";
 }
 
 /// fills resultInfo container with info about given result instance
@@ -459,70 +404,61 @@ function makeHtmlDisplayableTime(r)
 /// set \param r to null if you want to clear result info
 /// displays averages etc.
 /// fills "times" right panel with times and last result info
-function displayStats()
-{
+function displayStats() {
     saveLocal("plltimesarray", JSON.stringify(window.timesArray));
     var len = window.timesArray.length;
 
     var el = document.getElementById("times");
-    if (len == 0)
-    {
+    if (len == 0) {
         el.innerHTML = "";
         return;
     }
 
     var displayByCases = true;
 
-    if (displayByCases)
-    {
+    if (displayByCases) {
         // case-by-case
         var resultsByCase = []; // [57: [...], 12: [...], ...];
-        for (var i = 0; i < len; i++)
-        {
-            var currentpll = window.timesArray[i]["case"];
-            if (resultsByCase[currentpll] == null)
-                resultsByCase[currentpll] = [];
-            resultsByCase[currentpll].push( window.timesArray[i] );
+        for (var i = 0; i < len; i++) {
+            var currentPll = window.timesArray[i]["case"];
+            if (resultsByCase[currentPll] == null)
+                resultsByCase[currentPll] = [];
+            resultsByCase[currentPll].push(window.timesArray[i]);
         }
 
-        var keys = Object.keys(resultsByCase);
-        keys.sort();
+        var keysArray = Object.keys(resultsByCase);
+        keysArray.sort((n1,n2) => n1 - n2);
 
         var s = "";
         // allocate them inside times span
-        for (var j = 0; j < keys.length; j++) {
-            var pll = keys[j];
+        for (var j = 0; j < keysArray.length; j++) {
+            var pll = keysArray[j];
             var timesString = "";
             var meanForCase = 0.0;
             var i = 0;
-            for (; i < resultsByCase[pll].length; i++)
-            {
+            for (; i < resultsByCase[pll].length; i++) {
                 timesString += makeHtmlDisplayableTime(resultsByCase[pll][i]);
                 if (i != resultsByCase[pll].length - 1)
                     timesString += ", ";
                 // avg
-                meanForCase *= i/(i+1);
-                meanForCase += resultsByCase[pll][i]["ms"] / (i+1);
+                meanForCase *= i / (i + 1);
+                meanForCase += resultsByCase[pll][i]["ms"] / (i + 1);
             }
-            s += "<div class='pllNameHeader' " +
-            ")'><span class='pllNameStats' onclick='displayBox(event,"+keys[j]+")'>" + algsInfo[pll]["name"] + "</span>: " + msToHumanReadable(meanForCase) + "</div>" + timesString + "<br><br>";
+            s += "<div class='timeEntry'><div class='pllNameHeader'><span class='pllNameStats' onclick='displayBox(event," + keysArray[j] + ")'>" + algsInfo[pll]["name"] + "</span>: " + msToHumanReadable(meanForCase) + "</div>" + timesString + "</div>";
         }
         el.innerHTML = s;
     }
-    else
-    {
-        for (var i = 0; i < len; i++)
-        {
+    else {
+        for (var i = 0; i < len; i++) {
             el.innerHTML += makeHtmlDisplayableTime(window.timesArray[i]);
             if (i != window.timesArray.length - 1)
                 el.innerHTML += ", ";
         }
     }
-    document.getElementById("infoHeader").innerHTML = (len == 0 ? '' : len+' ');
+    document.getElementById("infoHeader").innerHTML = (len == 0 ? '' : len + ' ');
 }
 
-function makeResultInstance()
-{
+function makeResultInstance() {
     var currentTime = document.getElementById("timer").innerHTML;
     var details = window.lastScramble;
     var index = window.timesArray.length;
@@ -539,17 +475,17 @@ function makeResultInstance()
 // converts timestring to milliseconds (int)
 // 1:06.15 -> 6615
 function timeStringToMseconds(s) {
-        if (s == "")
-            return -1;
-        var parts = s.split(":");
-        var secs = parseFloat(parts[parts.length - 1]);
-        if (parts.length > 1) // minutes
-            secs += parseInt(parts[parts.length - 2]) * 60;
-        if (parts.length > 2) // hrs
-            secs += parseInt(parts[parts.length - 3]) * 3600;
-        if (isNaN(secs))
-            return -1;
-        return Math.round(secs * 100);
+    if (s == "")
+        return -1;
+    var parts = s.split(":");
+    var secs = parseFloat(parts[parts.length - 1]);
+    if (parts.length > 1) // minutes
+        secs += parseInt(parts[parts.length - 2]) * 60;
+    if (parts.length > 2) // hrs
+        secs += parseInt(parts[parts.length - 3]) * 3600;
+    if (isNaN(secs))
+        return -1;
+    return Math.round(secs * 100);
 }
 
 // style-related
@@ -562,7 +498,7 @@ function savestyle() {
         localStorage.setItem('linkscolor_in', document.getElementById("linkscolor_in").value);
         return true;
     }
-    catch(e) { return false; }
+    catch (e) { return false; }
 }
 
 //loads from localstorage
@@ -576,7 +512,7 @@ function loadstyle() {
             return true;
         }
     }
-    catch(e) { return false; }
+    catch (e) { return false; }
 }
 
 function applystyle() {
@@ -584,12 +520,12 @@ function applystyle() {
     document.getElementById("box").style.backgroundColor = document.getElementById("bgcolor_in").value;
     document.getElementById("bodyid").style.color = timer.style.color = document.getElementById("textcolor_in").value;
     var inputs = document.getElementsByClassName("settinginput");
-    Array.prototype.forEach.call(inputs, function(el) {
+    Array.prototype.forEach.call(inputs, function (el) {
         el.style.backgroundColor = document.getElementById("bgcolor_in").value;
         el.style.color = document.getElementById("textcolor_in").value;
     });
     var links = document.getElementsByTagName("a");
-    Array.prototype.forEach.call(links, function(el) {
+    Array.prototype.forEach.call(links, function (el) {
         el.style.color = document.getElementById("linkscolor_in").value;
     });
     savestyle();
@@ -597,7 +533,7 @@ function applystyle() {
 
 function resetStyle(dark) {
     document.getElementById("bgcolor_in").value = dark ? "#161616" : "#f5f5f5";
-    document.getElementById("textcolor_in").value = dark? "white" : "black";
+    document.getElementById("textcolor_in").value = dark ? "white" : "black";
     document.getElementById("linkscolor_in").value = dark ? "#ffff00" : "#004411";
     applystyle();
     savestyle();
@@ -605,8 +541,8 @@ function resetStyle(dark) {
 
 // add key listeners to blur settings inputs
 var inputs = document.getElementsByClassName("settinginput");
-Array.prototype.forEach.call(inputs, function(el) {
-    el.addEventListener("keydown", function(event) {
+Array.prototype.forEach.call(inputs, function (el) {
+    el.addEventListener("keydown", function (event) {
         if (event.keyCode == 13 || event.keyCode == 32 || event.keyCode == 27) {
             event.preventDefault()
             el.blur();
@@ -615,7 +551,7 @@ Array.prototype.forEach.call(inputs, function(el) {
 
 });
 
-document.getElementById("bodyid").addEventListener("keydown", function(event) {
+document.getElementById("bodyid").addEventListener("keydown", function (event) {
     if (event.keyCode == 27) // esc
         hideBox();
 });
@@ -637,7 +573,7 @@ function loadWeightedChoice() {
         }
         return true;
     }
-    catch(e) { return false; }
+    catch (e) { return false; }
 }
 
 // changes button text

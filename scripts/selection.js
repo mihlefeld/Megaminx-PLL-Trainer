@@ -19,7 +19,7 @@ function itemClicked(i) {
     else
         window.selCases.push(i);
 
-    document.getElementById("itemTd" + i).className = wasSelected ? "itemUnsel" : "itemSel" ;
+    document.getElementById("itemTd" + i).className = (wasSelected ? "itemUnsel" : "itemSel") + " borderedContainer" ;
     saveSelection();
     updateTitle();
 }
@@ -63,91 +63,58 @@ function selectPllGroup(name) {
     saveSelection();
 }
 
-function makeTrNormal(groupname) {
-    var s = "";
+function makeDivNormal(groupname) {
+    var s = "<div class='colFlex' style='width: fit-content'>";
     var indeces = algsGroups[groupname];
-    s += "<tr><td class='pllgrouptdUnsel' onclick='selectPllGroup(\""+groupname
-        +"\")' colspan='"+indeces.length+"'><b>" + groupname + "</b></td></tr>";
-    s += "<tr>";
+    s += "<div class='borderedContainer itemUnsel pad' onclick='selectPllGroup(\""+groupname
+        +"\")'><b>" + groupname + "</b></div>";
+    s += "<div class='rowFlex' style='flex-wrap: wrap'>";
     for (var j = 0; j < indeces.length; j++) {
         var i = indeces[j]; // case number
         var sel = (window.selCases.indexOf(i) != -1);
-        s += "<td id='itemTd"+i+"' onclick='itemClicked("+i+")' class='"+(sel?"itemSel":"itemUnsel")+"' title='"+algsInfo[i]["name"]+"'>"+
-        //"<img width='100px' id='sel"+i+"' src='pic/"+i+".png' > <br>case #"+i+"</td>";
-        "<img width='100px' id='sel"+i+"' src='pic/"+i+".png' ></td>";
+        s += "<div id='itemTd"+i+"' onclick='itemClicked("+i+")' class='borderedContainer "+(sel?"itemSel":"itemUnsel")+"' title='"+algsInfo[i]["name"]+"'>"+
+        //"<img width='100px' id='sel"+i+"' src='pic/"+i+".png' > <br>case #"+i+"</div>";
+        "<img class='caseImage' id='sel"+i+"' src='pic/"+i+".png' ></div>";
     }
-    s += "</tr>";
+    s += "</div></div>";
     return s;
 }
 
-/// gn1 groupname with 4 cases, gn2 groupname with 2 cases
-function makeTr42(gn1, gn2) {
-    var s = '';
-    var in1 = algsGroups[gn1], in2 = algsGroups[gn2];
-    s += "<tr>"+
-        "<td class='pllgrouptdUnsel' onclick='selectPllGroup(\""+gn1 +"\")' colspan='"+in1.length+"'><b>" + gn1 + "</b></td>"+
-        "<td class='pllgrouptdUnsel' onclick='selectPllGroup(\""+gn2 +"\")' colspan='"+in2.length+"'><b>" + gn2 + "</b></td>"+
-        "</tr>";
-    s += "<tr>";
-    for (var j = 0; j < in1.length; j++) {
-        var i = in1[j]; // case number
-        var sel = (window.selCases.indexOf(i) != -1);
-        s += "<td id='itemTd"+i+"' onclick='itemClicked("+i+")' class='"+(sel?"itemSel":"itemUnsel")+"' title='"+algsInfo[i]["name"]+"'>"+
-        //"<img width='100px' id='sel"+i+"' src='pic/"+i+".png' > <br>case #"+i+"</td>";
-        "<img width='100px' id='sel"+i+"' src='pic/"+i+".png' ></td>";
-    }
-    for (var j = 0; j < in2.length; j++) {
-        var i = in2[j]; // case number
-        var sel = (window.selCases.indexOf(i) != -1);
-        s += "<td id='itemTd"+i+"' onclick='itemClicked("+i+")' class='"+(sel?"itemSel":"itemUnsel")+"' title='"+algsInfo[i]["name"]+"'>"+
-        //"<img width='100px' id='sel"+i+"' src='pic/"+i+".png' > <br>case #"+i+"</td>";
-        "<img width='100px' id='sel"+i+"' src='pic/"+i+".png' ></td>";
-    }
-    s += "</tr>";
-    return s;
-}
 
 /// iterates the pllMap and highlights HTML elements according to the selection
 function renderSelection()
 {
     var s="";
+    s += "<div><div class='borderedContainer itemUnsel pad' onclick='selectAllNone()' colspan='6'><b>All Cases (152)</b> | selected: <span id='csi'></span></div></div>";
 
-    s += "<table class='plllayout'>";
-    //s += "<tr><a onclick='selectAllNone()'>select all or none</a>";
-    s += "<tr><td class='pllgrouptdUnsel' onclick='selectAllNone()' colspan='6'><b>All Cases (152)</b> | selected: <span id='csi'></span></td></tr>";
-
-    s += makeTrNormal("Group A");
-    s += makeTrNormal("Group B");
-    s += makeTrNormal("Group C");
-    s += makeTrNormal("Group D");
-    s += makeTrNormal("Group E");
-    s += makeTrNormal("Group F");
-    s += makeTrNormal("Group G");
-    s += makeTrNormal("Group H");
-    s += makeTrNormal("Group I");
-    s += makeTrNormal("Group J");
-    s += makeTrNormal("Group K");
-    s += makeTrNormal("Group L");
-    s += makeTrNormal("Group M");
-    s += makeTrNormal("Group N");
-    s += makeTrNormal("Group O");
-    s += makeTrNormal("Group P");
-    s += makeTrNormal("Group Q");
-    s += makeTrNormal("Group R");
-    s += makeTrNormal("Group S");
-    s += makeTrNormal("Group T");
-    s += makeTrNormal("Group U");
-    s += makeTrNormal("Group V");
-    s += makeTrNormal("Group W");
-    s += makeTrNormal("Group X");
-    s += makeTrNormal("Group Y");
-    s += makeTrNormal("Group Z");
+    s += makeDivNormal("Group A");
+    s += makeDivNormal("Group B");
+    s += makeDivNormal("Group C");
+    s += makeDivNormal("Group D");
+    s += makeDivNormal("Group E");
+    s += makeDivNormal("Group F");
+    s += makeDivNormal("Group G");
+    s += makeDivNormal("Group H");
+    s += makeDivNormal("Group I");
+    s += makeDivNormal("Group J");
+    s += makeDivNormal("Group K");
+    s += makeDivNormal("Group L");
+    s += makeDivNormal("Group M");
+    s += makeDivNormal("Group N");
+    s += makeDivNormal("Group O");
+    s += makeDivNormal("Group P");
+    s += makeDivNormal("Group Q");
+    s += makeDivNormal("Group R");
+    s += makeDivNormal("Group S");
+    s += makeDivNormal("Group T");
+    s += makeDivNormal("Group U");
+    s += makeDivNormal("Group V");
+    s += makeDivNormal("Group W");
+    s += makeDivNormal("Group X");
+    s += makeDivNormal("Group Y");
+    s += makeDivNormal("Group Z");
 
 
-
-
-
-    s += "</table>";
     document.getElementById("cases_selection").innerHTML = s;
     updateTitle();
 }
