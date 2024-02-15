@@ -7,7 +7,7 @@ function updateTitle() {
     document.getElementById("csi").innerHTML = window.selCases.length;
 }
 function itemClicked(i) {
-    if (window.pllMap[i] == null) {
+    if (window.scramblesMap[i] == null) {
         console.error("is null");
         return;
     }
@@ -27,7 +27,7 @@ function itemClicked(i) {
 function selectAllNone() {
     var nothingSelected = (window.selCases.length == 0);
     if (nothingSelected) {
-        for (var i = 1; i <= 152; ++i)
+        for (var i = 1; i <= Object.keys(scramblesMap).length; ++i)
             window.selCases.push(i);
     } else {
         window.selCases = [];
@@ -47,7 +47,7 @@ function isAtLeastOneSelected(groupName) {
 }
 
 // select or deselect all cases in the group
-function selectPllGroup(name) {
+function selectCaseGroup(name) {
     var aos = isAtLeastOneSelected(name);
     var indeces = algsGroups[name];
     for (i in indeces) {
@@ -66,7 +66,7 @@ function selectPllGroup(name) {
 function makeDivNormal(groupname) {
     var s = "<div class='colFlex' style='width: fit-content'>";
     var indeces = algsGroups[groupname];
-    s += "<div class='borderedContainer itemUnsel pad' onclick='selectPllGroup(\""+groupname
+    s += "<div class='borderedContainer itemUnsel pad' onclick='selectCaseGroup(\""+groupname
         +"\")'><b>" + groupname + "</b></div>";
     s += "<div class='rowFlex' style='flex-wrap: wrap'>";
     for (var j = 0; j < indeces.length; j++) {
@@ -81,39 +81,15 @@ function makeDivNormal(groupname) {
 }
 
 
-/// iterates the pllMap and highlights HTML elements according to the selection
+/// iterates the scramblesMap and highlights HTML elements according to the selection
 function renderSelection()
 {
     var s="";
-    s += "<div><div class='borderedContainer itemUnsel pad' onclick='selectAllNone()' colspan='6'><b>All Cases (152)</b> | selected: <span id='csi'></span></div></div>";
+    s += "<div><div class='borderedContainer itemUnsel pad' style='width: 100%' onclick='selectAllNone()'><b>All Cases (" + Object.keys(scramblesMap).length + ")</b> | selected: <span id='csi'></span></div></div>";
 
-    s += makeDivNormal("Group A");
-    s += makeDivNormal("Group B");
-    s += makeDivNormal("Group C");
-    s += makeDivNormal("Group D");
-    s += makeDivNormal("Group E");
-    s += makeDivNormal("Group F");
-    s += makeDivNormal("Group G");
-    s += makeDivNormal("Group H");
-    s += makeDivNormal("Group I");
-    s += makeDivNormal("Group J");
-    s += makeDivNormal("Group K");
-    s += makeDivNormal("Group L");
-    s += makeDivNormal("Group M");
-    s += makeDivNormal("Group N");
-    s += makeDivNormal("Group O");
-    s += makeDivNormal("Group P");
-    s += makeDivNormal("Group Q");
-    s += makeDivNormal("Group R");
-    s += makeDivNormal("Group S");
-    s += makeDivNormal("Group T");
-    s += makeDivNormal("Group U");
-    s += makeDivNormal("Group V");
-    s += makeDivNormal("Group W");
-    s += makeDivNormal("Group X");
-    s += makeDivNormal("Group Y");
-    s += makeDivNormal("Group Z");
-
+    for (const key of Object.keys(algsGroups)) {
+        s += makeDivNormal(key)
+    }
 
     document.getElementById("cases_selection").innerHTML = s;
     updateTitle();

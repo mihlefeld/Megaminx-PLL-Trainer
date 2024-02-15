@@ -1,3 +1,6 @@
+const timesArrayKey = "pllTimesArray";
+const selectionArrayKey = "pllSelection";
+
 var selCases = [];
 
 var algsGroups = {

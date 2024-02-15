@@ -23,14 +23,13 @@ img.caseImage {
     float: right;
     display: inline-block;
     border-radius: 10px;
-    background-color: #95a5a6;
-    border: none;
-    color: #FFFFFF;
+    border-style: solid;
     text-align: center;
     padding: 0.5em;
     margin: 0.125em;
     transition: all 0.3s;
     cursor: pointer;
+    width: 4em;
 }
 
 .abutton span {
@@ -54,10 +53,15 @@ img.caseImage {
 }
 
 .abutton:hover {
-    background-color: #74898b;
 }
 
 .abutton:hover span:after {
     opacity: 1;
     right: 0;
+}
+
+div#modeButtons {
+    position: fixed;
+    bottom: 1%;
+    right: 10%;
 }

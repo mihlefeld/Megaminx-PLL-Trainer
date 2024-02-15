@@ -40,3 +40,7 @@ input {
 span.timeResult {
     cursor: pointer;
 }
+
+span.timeResultBold {
+    cursor: pointer;
+}

@@ -28,11 +28,11 @@ function loadLocal(name, defaultValue) {
 }
 
 function saveSelection() {
-    return saveLocal('pllSelection', JSON.stringify(window.selCases));
+    return saveLocal(selectionArrayKey, JSON.stringify(window.selCases));
 }
 
 function loadSelection() {
-    window.selCases = JSON.parse(loadLocal('pllSelection', '[1,2]'));
+    window.selCases = JSON.parse(loadLocal(selectionArrayKey, '[1,2]'));
     if (window.selCases == null)
         window.selCases = [1,2];
     saveSelection();

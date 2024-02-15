@@ -1,10 +1,11 @@
 var allowStartingTimer;
-var timesArray = JSON.parse(loadLocal("plltimesarray", "[]"));
+var timesArray = JSON.parse(loadLocal(timesArrayKey, "[]"));
 if (timesArray == null) // todo fix when figure out why JSON.parse("[]") returns 0
     timesArray = [];
 var lastScramble = "";
 var lastCase = 0;
 var useWeightedChoice = false;
+var showSettings = false;
 
 displayStats(); // after loading
 
@@ -13,7 +14,7 @@ function showScramble() {
     window.allowStartingTimer = false;
     var s;
     if (window.selCases.length == 0) {
-        s = "click \"select cases\" above and pick some plls to practice";
+        s = "click \"select cases\" above and pick some olls to practice";
         document.getElementById("selInfo").innerHTML = "";
     }
     else {
@@ -54,7 +55,7 @@ function displayPracticeInfo() {
 function generateScramble() {
     if (window.lastScramble != "")
         document.getElementById("last_scramble").innerHTML = "last scramble: " + window.lastScramble +
-            " <span onclick='displayBox(event," + lastCase + ")' class='pllNameStats'>(" + algsInfo[lastCase]["name"] + ") </span><a class='settings' onclick='confirmUnsel(" + lastCase + ")' style='color:" + document.getElementById("linkscolor_in").value + ";'>unselect</a>";
+            " <span onclick='displayBox(event," + lastCase + ")' class='caseNameStats'>(" + algsInfo[lastCase]["name"] + ") </span><a class='settings' onclick='confirmUnsel(" + lastCase + ")' style='color:" + document.getElementById("linkscolor_in").value + ";'>unselect</a>";
     displayPracticeInfo();
     // get random case
     var caseNum = 0;
@@ -63,9 +64,9 @@ function generateScramble() {
             var selCasesCounts = []; // count how often each case has appeared already
             for (var i = 0; i < window.selCases.length; i++) {
                 var count = 0;
-                var currentpll = window.selCases[i];
+                var currentCase = window.selCases[i];
                 for (var j = 0; j < window.timesArray.length; j++) {
-                    if (window.timesArray[j]["case"] == currentpll)
+                    if (window.timesArray[j]["case"] == currentCase)
                         count += 1;
                 }
                 selCasesCounts.push(count);
@@ -99,7 +100,7 @@ function generateScramble() {
         window.recapArray.splice(index, 1);
 
     }
-    var alg = randomElement(window.pllMap[caseNum]);
+    var alg = randomElement(window.scramblesMap[caseNum]);
     var rotation = randomElement(["", " U", " U'", " U2", " U2'"]);
     var finalAlg = alg + rotation;
 
@@ -269,15 +270,15 @@ var defTimerSize = 5;
 var defScrambleSize = 2;
 var defBaseSize = 1.3;
 
-var timerSize = parseFloat(loadLocal("pllTimerSize", "" + defTimerSize));
+var timerSize = parseFloat(loadLocal("timerSize", "" + defTimerSize));
 if (isNaN(timerSize) || timerSize <= 0)
     timerSize = defTimerSize;
 
-var scrambleSize = parseFloat(loadLocal("pllScrambleSize", "" + defScrambleSize));
+var scrambleSize = parseFloat(loadLocal("scrambleSize", "" + defScrambleSize));
 if (isNaN(scrambleSize) || scrambleSize <= 0)
     scrambleSize = defScrambleSize;
 
-var baseSize = parseFloat(loadLocal("pllBaseSize", "" + defBaseSize));
+var baseSize = parseFloat(loadLocal("baseSize", "" + defBaseSize));
 if (isNaN(baseSize) || baseSize <= 0)
     baseSize = defBaseSize;
 
@@ -289,18 +290,18 @@ function adjustSize(item, inc) {
     if (item == 'timer') {
         window.timerSize += inc
         document.getElementById('timer').style.fontSize = window.timerSize + "em";
-        saveLocal("pllTimerSize", "" + window.timerSize);
+        saveLocal("timerSize", "" + window.timerSize);
     }
 
     if (item == 'scramble') {
         window.scrambleSize += inc
         document.getElementById('scramble').style.fontSize = window.scrambleSize + "em";
-        saveLocal("pllScrambleSize", "" + window.scrambleSize);
+        saveLocal("scrambleSize", "" + window.scrambleSize);
     }
     if (item == 'body') {
         window.baseSize += inc
         document.getElementById('bodyid').style.fontSize = window.baseSize + "em";
-        saveLocal("pllBaseSize", "" + window.baseSize);
+        saveLocal("baseSize", "" + window.baseSize);
     }
 }
 
@@ -393,10 +394,13 @@ function hideBox() {
 /// \param r - result instance (see makeResultInstance)
 /// \returns html code for displaying the instance
 function makeHtmlDisplayableTime(r) {
-    var classname = (r == window.timesArray[window.timesArray.length - 1]) ? "timeResultBold" : "timeResult";
-    return resultString = "<span class='" + classname + "' title='" +
+    var isMostRecent = (r == window.timesArray[window.timesArray.length - 1]);
+    var classname = isMostRecent ? "timeResultBold" : "timeResult";
+    var styleString = isMostRecent ? "style='color: " + document.getElementById("linkscolor_in").value + "'" : ""; 
+    resultString = "<span class='" + classname + "' " + styleString + " title='" +
         escapeHtml(r["details"]) + "' onclick='confirmRem("
         + r["index"] + ")' >" + r["time"] + "</span>";
+    return resultString;
 }
 
 /// fills resultInfo container with info about given result instance
@@ -405,7 +409,7 @@ function makeHtmlDisplayableTime(r) {
 /// displays averages etc.
 /// fills "times" right panel with times and last result info
 function displayStats() {
-    saveLocal("plltimesarray", JSON.stringify(window.timesArray));
+    saveLocal(timesArrayKey, JSON.stringify(window.timesArray));
     var len = window.timesArray.length;
 
     var el = document.getElementById("times");
@@ -420,31 +424,31 @@ function displayStats() {
         // case-by-case
         var resultsByCase = []; // [57: [...], 12: [...], ...];
         for (var i = 0; i < len; i++) {
-            var currentPll = window.timesArray[i]["case"];
-            if (resultsByCase[currentPll] == null)
-                resultsByCase[currentPll] = [];
-            resultsByCase[currentPll].push(window.timesArray[i]);
+            var currentCase = window.timesArray[i]["case"];
+            if (resultsByCase[currentCase] == null)
+                resultsByCase[currentCase] = [];
+            resultsByCase[currentCase].push(window.timesArray[i]);
         }
 
-        var keysArray = Object.keys(resultsByCase);
-        keysArray.sort((n1,n2) => n1 - n2);
+        var keys = Object.keys(resultsByCase);
+        keys.sort((n1,n2) => n1 - n2);
 
         var s = "";
         // allocate them inside times span
-        for (var j = 0; j < keysArray.length; j++) {
-            var pll = keysArray[j];
+        for (var j = 0; j < keys.length; j++) {
+            var case_ = keys[j];
             var timesString = "";
             var meanForCase = 0.0;
             var i = 0;
-            for (; i < resultsByCase[pll].length; i++) {
-                timesString += makeHtmlDisplayableTime(resultsByCase[pll][i]);
-                if (i != resultsByCase[pll].length - 1)
+            for (; i < resultsByCase[case_].length; i++) {
+                timesString += makeHtmlDisplayableTime(resultsByCase[case_][i]);
+                if (i != resultsByCase[case_].length - 1)
                     timesString += ", ";
                 // avg
                 meanForCase *= i / (i + 1);
-                meanForCase += resultsByCase[pll][i]["ms"] / (i + 1);
+                meanForCase += resultsByCase[case_][i]["ms"] / (i + 1);
             }
-            s += "<div class='timeEntry'><div class='pllNameHeader'><span class='pllNameStats' onclick='displayBox(event," + keysArray[j] + ")'>" + algsInfo[pll]["name"] + "</span>: " + msToHumanReadable(meanForCase) + "</div>" + timesString + "</div>";
+            s += "<div class='timeEntry'><div><span class='caseNameStats' onclick='displayBox(event," + keys[j] + ")'>" + algsInfo[case_]["name"] + "</span>: " + msToHumanReadable(meanForCase) + "</div>" + timesString + "</div>";
         }
         el.innerHTML = s;
     }
@@ -516,25 +520,29 @@ function loadstyle() {
 }
 
 function applystyle() {
-    document.getElementById("bodyid").style.backgroundColor = document.getElementById("bgcolor_in").value;
-    document.getElementById("box").style.backgroundColor = document.getElementById("bgcolor_in").value;
-    document.getElementById("bodyid").style.color = timer.style.color = document.getElementById("textcolor_in").value;
+    const bgColor = document.getElementById("bgcolor_in").value;
+    const textColor = document.getElementById("textcolor_in").value;
+    const linksColor = document.getElementById("linkscolor_in").value;
+    document.getElementById("bodyid").style.backgroundColor = bgColor;
+    document.getElementById("box").style.backgroundColor = bgColor;
+    document.getElementById("bodyid").style.color = textColor;
     var inputs = document.getElementsByClassName("settinginput");
     Array.prototype.forEach.call(inputs, function (el) {
-        el.style.backgroundColor = document.getElementById("bgcolor_in").value;
-        el.style.color = document.getElementById("textcolor_in").value;
+        el.style.backgroundColor = bgColor;
+        el.style.color = textColor;
     });
     var links = document.getElementsByTagName("a");
     Array.prototype.forEach.call(links, function (el) {
-        el.style.color = document.getElementById("linkscolor_in").value;
+        el.style.color = linksColor;
+        el.style.backgroundColor = bgColor;
     });
     savestyle();
 }
 
 function resetStyle(dark) {
-    document.getElementById("bgcolor_in").value = dark ? "#161616" : "#f5f5f5";
+    document.getElementById("bgcolor_in").value = dark ? "#222" : "#f5f5f5";
     document.getElementById("textcolor_in").value = dark ? "white" : "black";
-    document.getElementById("linkscolor_in").value = dark ? "#ffff00" : "#004411";
+    document.getElementById("linkscolor_in").value = dark ? "gold" : "#004411";
     applystyle();
     savestyle();
 }
@@ -603,3 +611,10 @@ function setWeightedChoice() {
 
 loadWeightedChoice();
 applyWeightedChoice();
+
+function toggleSettings() {
+    var settingsDiv = document.getElementById("settings");
+    settingsDiv.style.display = showSettings ? "none" : "initial";
+    document.getElementById("settingsButton").innerText = showSettings ? 'expand_less' : 'expand_more';
+    showSettings = !showSettings;
+}

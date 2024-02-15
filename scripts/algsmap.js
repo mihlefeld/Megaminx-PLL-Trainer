@@ -1,4 +1,4 @@
-﻿var pllMap = {
+﻿var scramblesMap = {
   1: [
     "R' U R2 U2' R U2 R2 U' R U R2 U2' R' U2 R'",
     "R' U2 R2 U2 R U2' R2 U2' R U R2 U2' R' U2 R'",
@@ -481,7 +481,7 @@
     "R U2 R2' U' R2 U2' R' U2 R' U2' R U2 R' U R2 U2' R'",
   ],
   81: [
-    "",
+    "solved",
   ],
   82: [
     "R' U2' R U' R' U2 R U2' R' U2' R2 U R' U2 R U2 R'",
