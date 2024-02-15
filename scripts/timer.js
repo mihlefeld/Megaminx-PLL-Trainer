@@ -379,12 +379,12 @@ function displayBox(event, i) {
     document.getElementById("hintWindowBack").style.display = 'initial';
     document.getElementById("hintWindow").style.display = 'initial';
     document.getElementById("boxTitle").innerHTML = '#' + i + " " + algsInfo[i]["name"];
-    var algsStr = ""
+    var algsStr = "Algorithms:<br/>"
     for(const alg of algsInfo[i]["a"]) {
         algsStr += alg + "<br/>"
     }
     document.getElementById("boxalg").innerHTML = algsStr;
-    document.getElementById("boxsetup").innerHTML = scramblesMap[i][0];
+    document.getElementById("boxsetup").innerHTML = "Setup:<br/>" + scramblesMap[i][0];
     document.getElementById("boxImg").src = "pic/" + i + ".png";
 }
 
