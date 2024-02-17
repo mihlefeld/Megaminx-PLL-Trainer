@@ -26,17 +26,26 @@
 				'opsz' 24
 		}
 	</style>
+	<script src="scripts/algsinfo.js?v4"></script>
+	<script src="scripts/algsmap.js?v4"></script>
+	<script src="scripts/utils.js?v4"></script>
+	<script src="scripts/selection.js?v4"></script>
+	<script src="scripts/timer.js?v4"></script>
+	<script src="scripts/practice.js?v4"></script>
+	<script src="scripts/settings.js?v4"></script>
+	<script src="scripts/main.js?v4" defer></script>
+
 </head>
 
-<body class="niceBody" id="bodyid">
-	<div class="practice_layout colflex">
+<body class="niceBody" id="bodyid" style="display: none;">
+	<div class="practice_layout colflex" style="display: none;">
 		<div id="mainTable" class="colFlex">
 			<div id="casesBox" class="borderedContainer pad rowFlex center">
 				<div>
 					<a id='selectBtn' onclick='changeMode(0)'>select cases</a><span id='selInfo'></span>
 				</div>
 				<span onclick="document.getElementById('settings').showModal();"
-					style="align-self: flex-start; padding: 0.2em; font-size: 2em;"
+					style="padding: 0.2em; font-size: 2em; height: 1em; width: 1em;"
 					class="material-symbols-outlined abutton">
 					settings
 			</div>
@@ -83,7 +92,7 @@
 				<h3><a href="https://github.com/mihlefeld/Megaminx-PLL-Trainer">GitHub</a></h3>
 			</div>
 			<span onclick="document.getElementById('settings').showModal();"
-				style="align-self: flex-start; padding: 0.2em; font-size: 2em;"
+				style="height: 1em; width: 1em; padding: 0.2em; font-size: 2em;"
 				class="material-symbols-outlined abutton">
 				settings
 			</span>
@@ -124,7 +133,7 @@
 			<div>Weighted choice</div>
 			<!-- Rounded switch -->
 			<label class="switch">
-				<input onclick="setWeightedChoice();" type="checkbox" id="weighted_coice_on_off" value="using">
+				<input onclick="toggleWeightedChoice(this);" type="checkbox" id="weighted_choice_on_off" value="using">
 				<span class="slider round"></span>
 			</label>
 		</div>
@@ -165,37 +174,27 @@
 				onchange="changeColor(event);" placeholder='#222222' maxlength='12' />
 		</div>
 		<div class="settingsEntry">
-			<div>Text</div> <div style="background-color: var(--text);"></div><input type='text' value='#ffffff' class='settinginput' id='--text'
-				onchange="changeColor(event);" placeholder='#ffffff' maxlength='12' style="background-color: var(--text); color: var(--background);" />
+			<div>Text</div>
+			<div style="background-color: var(--text);"></div><input type='text' value='#ffffff' class='settinginput'
+				id='--text' onchange="changeColor(event);" placeholder='#ffffff' maxlength='12'
+				style="background-color: var(--text); color: var(--background);" />
 		</div>
 		<div class="settingsEntry">
 			<div>Primary</div> <input type='text' value='#ffd700' class='settinginput' id='--primary'
-				onchange="changeColor(event);" placeholder='#ffd700' maxlength='12' style="background-color: var(--primary);" />
+				onchange="changeColor(event);" placeholder='#ffd700' maxlength='12'
+				style="background-color: var(--primary);" />
 		</div>
 		<div class="settingsEntry">
 			<div>Secondary</div> <input type='text' value='#ffd700' class='settinginput' id='--secondary'
-				onchange="changeColor(event);" placeholder='#ffd700' maxlength='12' style="background-color: var(--secondary);" />
+				onchange="changeColor(event);" placeholder='#ffd700' maxlength='12'
+				style="background-color: var(--secondary);" />
 		</div>
 		<div class="settingsEntry">
 			<div>Accent</div> <input type='text' value='#ffd700' class='settinginput' id='--accent'
-				onchange="changeColor(event);" placeholder='#ffd700' maxlength='12' style="background-color: var(--accent);" />
+				onchange="changeColor(event);" placeholder='#ffd700' maxlength='12'
+				style="background-color: var(--accent);" />
 		</div>
 	</dialog>
 </body>
 
 </html>
-<script src="scripts/algsinfo.js?v4"></script>
-<script src="scripts/algsmap.js?v4"></script>
-<script src="scripts/saveload.js?v4"></script>
-<script src="scripts/selection.js?v4"></script>
-<script src="scripts/timer.js?v4"></script>
-<script src="scripts/practice.js?v4"></script>
-<script>
-	changeMode(0);
-</script>
-
-
-<script>
-
-
-</script>

@@ -1,11 +1,9 @@
-
-// load selected cases
-loadSelection();
-renderSelection();
+var selCases = [1, 2];
 
 function updateTitle() {
-    document.getElementById("csi").innerHTML = window.selCases.length;
+    document.getElementById("csi").innerHTML = selCases.length;
 }
+
 function itemClicked(i) {
     if (window.scramblesMap[i] == null) {
         console.error("is null");
@@ -15,11 +13,11 @@ function itemClicked(i) {
     var index = window.selCases.indexOf(i);
     var wasSelected = (index != -1);
     if (wasSelected)
-        window.selCases.splice(index, 1);
+        selCases.splice(index, 1);
     else
-        window.selCases.push(i);
+        selCases.push(i);
 
-    document.getElementById("itemTd" + i).className = (wasSelected ? "itemUnsel" : "itemSel") + " borderedContainer" ;
+    document.getElementById("itemTd" + i).className = (wasSelected ? "itemUnsel" : "itemSel") + " borderedContainer";
     saveSelection();
     updateTitle();
 }
@@ -28,9 +26,9 @@ function selectAllNone() {
     var nothingSelected = (window.selCases.length == 0);
     if (nothingSelected) {
         for (var i = 1; i <= Object.keys(scramblesMap).length; ++i)
-            window.selCases.push(i);
+            selCases.push(i);
     } else {
-        window.selCases = [];
+        selCases = [];
     }
     renderSelection();
     saveSelection();
@@ -52,11 +50,11 @@ function selectCaseGroup(name) {
     var indeces = algsGroups[name];
     for (i in indeces) {
         if (aos) { // need to delete
-            var j = window.selCases.indexOf(indeces[i]);
+            var j = selCases.indexOf(indeces[i]);
             if (j != -1)
-                window.selCases.splice(j, 1);
+                selCases.splice(j, 1);
         } else { // need to add
-            window.selCases.push(indeces[i]);
+            selCases.push(indeces[i]);
         }
     }
     renderSelection();
@@ -66,15 +64,15 @@ function selectCaseGroup(name) {
 function makeDivNormal(groupname) {
     var s = "<div class='colFlex' style='width: fit-content'>";
     var indeces = algsGroups[groupname];
-    s += "<div class='borderedContainer itemUnsel pad' onclick='selectCaseGroup(\""+groupname
-        +"\")'><b>" + groupname + "</b></div>";
+    s += "<div class='borderedContainer itemUnsel pad' onclick='selectCaseGroup(\"" + groupname
+        + "\")'><b>" + groupname + "</b></div>";
     s += "<div class='rowFlex' style='flex-wrap: wrap'>";
     for (var j = 0; j < indeces.length; j++) {
         var i = indeces[j]; // case number
-        var sel = (window.selCases.indexOf(i) != -1);
-        s += "<div id='itemTd"+i+"' onclick='itemClicked("+i+")' class='borderedContainer "+(sel?"itemSel":"itemUnsel")+"' title='"+algsInfo[i]["name"]+"'>"+
-        //"<img width='100px' id='sel"+i+"' src='pic/"+i+".png' > <br>case #"+i+"</div>";
-        "<img class='caseImage' id='sel"+i+"' src='pic/"+i+".png' ></div>";
+        var sel = (selCases.indexOf(i) != -1);
+        s += "<div id='itemTd" + i + "' onclick='itemClicked(" + i + ")' class='borderedContainer " + (sel ? "itemSel" : "itemUnsel") + "' title='" + algsInfo[i]["name"] + "'>" +
+            //"<img width='100px' id='sel"+i+"' src='pic/"+i+".png' > <br>case #"+i+"</div>";
+            "<img class='caseImage' id='sel" + i + "' src='pic/" + i + ".png' ></div>";
     }
     s += "</div></div>";
     return s;
@@ -82,9 +80,8 @@ function makeDivNormal(groupname) {
 
 
 /// iterates the scramblesMap and highlights HTML elements according to the selection
-function renderSelection()
-{
-    var s="";
+function renderSelection() {
+    var s = "";
     s += "<div><div class='borderedContainer itemUnsel pad' style='width: 100%' onclick='selectAllNone()'><b>All Cases (" + Object.keys(scramblesMap).length + ")</b> | selected: <span id='csi'></span></div></div>";
 
     for (const key of Object.keys(algsGroups)) {
@@ -93,4 +90,15 @@ function renderSelection()
 
     document.getElementById("cases_selection").innerHTML = s;
     updateTitle();
+}
+
+
+function saveSelection() {
+    localStorage.setItem(selectionArrayKey, JSON.stringify(selCases));
+}
+
+function loadSelection() {
+    var cases = loadLocal(selectionArrayKey);
+    if (cases != null)
+        selCases = JSON.parse(cases);
 }

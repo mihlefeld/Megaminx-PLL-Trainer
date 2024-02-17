@@ -4,28 +4,6 @@ if (timesArray == null) // todo fix when figure out why JSON.parse("[]") returns
     timesArray = [];
 var lastScramble = "";
 var lastCase = 0;
-var useWeightedChoice = false;
-var showSettings = false;
-var colorIds = ['--text', '--background', '--primary', '--secondary', '--accent'];
-var defaultColors = {
-    'dark': {
-        '--text': "#f3f1e7",
-        '--background': "#222222",
-        '--primary': "#a59855",
-        '--secondary': "#405e31",
-        '--accent': "#ffe252"
-    },
-    "light": {
-        '--text': "#18160c",
-        '--background': "#fbfaf7",
-        '--primary': "#aa9c59",
-        '--secondary': "#b1cfa2",
-        '--accent': "#ffe252"
-    }
-}
-var currentColors = defaultColors['dark'];
-
-displayStats(); // after loading
 
 /// invokes generateScramble() and sets scramble string
 function showScramble() {
@@ -58,7 +36,6 @@ function confirmUnsel(i) {
         showScramble();
     }
 }
-
 
 function displayPracticeInfo() {
     var s = "";
@@ -133,17 +110,7 @@ function generateScramble() {
 var startMilliseconds, stopMiliseconds; // date and time when timer was started
 var allowed = true; // allowed var is for preventing auto-repeat when you hold a button
 var running = false; var waiting = false;
-var timer = document.getElementById("timer");
-
-function isMobile() {
-    var check = false;
-    (function (a) { if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) check = true; })(navigator.userAgent || navigator.vendor || window.opera);
-    return check;
-}
-
-welcomeMessage = isMobile() ? "touch to start" : "ready";
-timer.innerHTML = welcomeMessage;
-
+var timer = null;
 var timerActivatingButton = 32; // 17 for ctrl
 var timeout;
 
@@ -174,51 +141,6 @@ function displayTime() {
             timer.innerHTML = msToHumanReadable(diff);
     }
 }
-
-/// handles keypup and keydown events. Starts timer etc.
-document.getElementById("bodyid").addEventListener("keydown", function (event) {
-    // delete hotkey - remove last
-    if (event.keyCode == 46 && !running) {
-        if (!!window.event.shiftKey)
-            confirmClear();
-        else
-            confirmRemLast();
-        return;
-    }
-
-    if (!allowed || !window.allowStartingTimer)
-        return; // preventing auto-repeat and empty scrambles
-
-    if (event.keyCode != 16) // shift
-        allowed = false;
-
-    if (running) {
-        // stop timer on any button
-        timerStop();
-        return;
-    }
-    else if (event.keyCode == timerActivatingButton) {
-        timerSetReady();
-        return;
-    }
-});
-
-/// keyup event for starting the timer
-document.getElementById("bodyid").addEventListener("keyup", function (event) {
-    allowed = true;
-    if (!window.allowStartingTimer)
-        return; // preventing auto-repeat
-    if (!running && !waiting && (event.keyCode == timerActivatingButton)) {
-        timerStart();
-    }
-    else {
-        timerAfterStop();
-    }
-});
-
-timerDiv = document.getElementById("timerDiv")
-timerDiv.addEventListener("touchstart", handleTouchStart, false);
-timerDiv.addEventListener("touchend", handleTouchEnd, false);
 
 function handleTouchEnd() {
     if (!window.allowStartingTimer)
@@ -264,64 +186,14 @@ function timerStart() {
     startMilliseconds = d.getTime();
     running = true;
     timeout = setInterval(displayTime, 10);
-    timer.style.color = currentColors['--text'];
+    timer.style.color = currentSettings['colors']['--text'];
 }
 
 function timerAfterStop() {
-    timer.style.color = currentColors['--text'];
+    timer.style.color = currentSettings['colors']['--text'];
+    console.log('stop');
 }
 
-
-// sizes. Too tired, cannot produce normal code
-var defTimerSize = 5;
-var defScrambleSize = 2;
-var defBaseSize = isMobile() ? 2.5 : 1.3;
-
-var timerSize = parseFloat(loadLocal("timerSize", "" + defTimerSize));
-if (isNaN(timerSize) || timerSize <= 0)
-    timerSize = defTimerSize;
-
-var scrambleSize = parseFloat(loadLocal("scrambleSize", "" + defScrambleSize));
-if (isNaN(scrambleSize) || scrambleSize <= 0)
-    scrambleSize = defScrambleSize;
-
-var baseSize = parseFloat(loadLocal("baseSize", "" + defBaseSize));
-if (isNaN(baseSize) || baseSize <= 0)
-    baseSize = defBaseSize;
-
-adjustSize('scramble', 0);
-adjustSize('timer', 0);
-adjustSize('body', 0);
-
-function adjustSize(item, inc) {
-    if (item == 'timer') {
-        window.timerSize += inc
-        document.getElementById('timer').style.fontSize = window.timerSize + "em";
-        saveLocal("timerSize", "" + window.timerSize);
-    }
-
-    if (item == 'scramble') {
-        window.scrambleSize += inc
-        document.getElementById('scramble').style.fontSize = window.scrambleSize + "em";
-        saveLocal("scrambleSize", "" + window.scrambleSize);
-    }
-    if (item == 'body') {
-        window.baseSize += inc
-        document.getElementById('bodyid').style.fontSize = window.baseSize + "em";
-        saveLocal("baseSize", "" + window.baseSize);
-    }
-}
-
-function resetDefaults() {
-    window.timerSize = defTimerSize;
-    window.scrambleSize = defScrambleSize;
-    window.baseSize = baseSize;
-    adjustSize('scramble', 0);
-    adjustSize('timer', 0);
-    adjustSize('body', 0)
-}
-
-/* STATS */
 
 // http://stackoverflow.com/questions/1787322/htmlspecialchars-equivalent-in-javascript
 function escapeHtml(text) {
@@ -416,6 +288,7 @@ function displayStats() {
     var el = document.getElementById("times");
     if (len == 0) {
         el.innerHTML = "";
+        document.getElementById("infoHeader").innerHTML = '';
         return;
     }
 
@@ -491,111 +364,4 @@ function timeStringToMseconds(s) {
     if (isNaN(secs))
         return -1;
     return Math.round(secs * 100);
-}
-
-// style-related
-
-//loads from localstorage
-function loadstyle() {
-    try {
-        currentColors = JSON.parse(localStorage.getItem('colors'));
-        for (const [key, value] of Object.entries(currentColors)) {
-            document.getElementById(key).value = value;
-        }
-    }
-    catch (e) { 
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            resetStyle('dark');
-        } else {
-            resetStyle('light');
-        }
-        return false; 
-    }
-}
-
-function changeColor(event) {
-    var newColor = event.target.value;
-    var id = event.target.id;
-    currentColors[id] = newColor;
-    applystyle();
-}
-
-function applystyle() {
-    var body = document.body;
-    for (const [k, color] of Object.entries(currentColors)) {
-        body.style.setProperty(k, color);
-        if (k == "--text") {
-            document.getElementById("timer").style.color = color;
-        }
-    }
-    localStorage.setItem('colors', JSON.stringify(currentColors));
-}
-
-function resetStyle(dark) {
-    currentColors = defaultColors[dark];
-    for (const [key, value] of Object.entries(currentColors)) {
-        document.getElementById(key).value = value;
-    }
-    applystyle();
-}
-
-// add key listeners to blur settings inputs
-var inputs = document.getElementsByClassName("settinginput");
-Array.prototype.forEach.call(inputs, function (el) {
-    el.addEventListener("keydown", function (event) {
-        if (event.keyCode == 13 || event.keyCode == 32 || event.keyCode == 27) {
-            event.preventDefault()
-            el.blur();
-        }
-    });
-
-});
-
-loadstyle();
-applystyle();
-
-
-/* weightec choice settings*/
-
-// loads weighted choice setting 
-function loadWeightedChoice() {
-    try {
-        var useWC = localStorage.getItem('useweightedchoice');
-        if (useWC == "true") {
-            window.useWeightedChoice = true;
-        } else {
-            window.useWeightedChoice = false;
-        }
-        return true;
-    }
-    catch (e) { return false; }
-}
-
-// changes button text
-function applyWeightedChoice() {
-    console.log(window.useWeightedChoice);
-    document.getElementById("weighted_coice_on_off").checked = window.useWeightedChoice;
-    saveWeightedChoice();
-}
-
-// saves the current wc setting
-function saveWeightedChoice() {
-    saveLocal("useweightedchoice", window.useWeightedChoice);
-}
-
-// changes the current setting from true/false to false/true
-function setWeightedChoice() {
-    window.useWeightedChoice = !window.useWeightedChoice;
-    applyWeightedChoice();
-    // console.log(useWeightedChoice);
-}
-
-loadWeightedChoice();
-applyWeightedChoice();
-
-function toggleSettings() {
-    var settingsDiv = document.getElementById("settings");
-    settingsDiv.style.display = showSettings ? "none" : "initial";
-    document.getElementById("settingsButton").innerText = showSettings ? 'expand_less' : 'expand_more';
-    showSettings = !showSettings;
 }
