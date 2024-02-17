@@ -9,18 +9,18 @@ var showSettings = false;
 var colorIds = ['--text', '--background', '--primary', '--secondary', '--accent'];
 var defaultColors = {
     'dark': {
-        '--text': "#ece6f3",
-        '--background': "#0e0914",
-        '--primary': "#b5a1d2",
-        '--secondary': "#743738",
-        '--accent': "#b08658"
+        '--text': "#f3f1e7",
+        '--background': "#222222",
+        '--primary': "#a59855",
+        '--secondary': "#405e31",
+        '--accent': "#ffe252"
     },
     "light": {
-        '--text': "#110c18",
-        '--background': "#efeaf6",
-        '--primary': "#402d5d",
-        '--secondary': "#c8898a",
-        '--accent': "#a67c4e"
+        '--text': "#18160c",
+        '--background': "#fbfaf7",
+        '--primary': "#aa9c59",
+        '--secondary': "#b1cfa2",
+        '--accent': "#ffe252"
     }
 }
 var currentColors = defaultColors['dark'];
@@ -398,8 +398,7 @@ function showHint(element, i) {
 function makeHtmlDisplayableTime(r) {
     var isMostRecent = (r == window.timesArray[window.timesArray.length - 1]);
     var classname = isMostRecent ? "timeResultBold" : "timeResult";
-    var styleString = isMostRecent ? "style='color: var(--primary)'" : ""; 
-    resultString = "<span class='" + classname + "' " + styleString + " title='" +
+    resultString = "<span class='" + classname + "' title='" +
         escapeHtml(r["details"]) + "' onclick='confirmRem("
         + r["index"] + ")' >" + r["time"] + "</span>";
     return resultString;

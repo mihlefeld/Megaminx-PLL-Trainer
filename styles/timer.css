@@ -50,6 +50,7 @@ span.timeResult {
 
 span.timeResultBold {
     cursor: pointer;
+    color: var(--primary);
 }
 
 div#scramble span {
@@ -57,5 +58,9 @@ div#scramble span {
 }
 
 div#scramble span:hover {
+    color: var(--primary);
+}
+
+.caseNameStats:hover {
     color: var(--primary);
 }
