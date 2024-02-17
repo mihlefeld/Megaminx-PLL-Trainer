@@ -573,11 +573,8 @@ function loadWeightedChoice() {
 
 // changes button text
 function applyWeightedChoice() {
-    if (window.useWeightedChoice) {
-        document.getElementById("weighted_coice_on_off").innerHTML = "using";
-    } else {
-        document.getElementById("weighted_coice_on_off").innerHTML = "not using";
-    }
+    console.log(window.useWeightedChoice);
+    document.getElementById("weighted_coice_on_off").checked = window.useWeightedChoice;
     saveWeightedChoice();
 }
 
@@ -588,10 +585,7 @@ function saveWeightedChoice() {
 
 // changes the current setting from true/false to false/true
 function setWeightedChoice() {
-    if (window.useWeightedChoice)
-        window.useWeightedChoice = false;
-    else
-        window.useWeightedChoice = true;
+    window.useWeightedChoice = !window.useWeightedChoice;
     applyWeightedChoice();
     // console.log(useWeightedChoice);
 }
