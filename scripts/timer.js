@@ -6,6 +6,24 @@ var lastScramble = "";
 var lastCase = 0;
 var useWeightedChoice = false;
 var showSettings = false;
+var colorIds = ['--text', '--background', '--primary', '--secondary', '--accent'];
+var defaultColors = {
+    'dark': {
+        '--text': "#ece6f3",
+        '--background': "#0e0914",
+        '--primary': "#b5a1d2",
+        '--secondary': "#743738",
+        '--accent': "#b08658"
+    },
+    "light": {
+        '--text': "#110c18",
+        '--background': "#efeaf6",
+        '--primary': "#402d5d",
+        '--secondary': "#c8898a",
+        '--accent': "#a67c4e"
+    }
+}
+var currentColors = defaultColors['dark'];
 
 displayStats(); // after loading
 
@@ -22,7 +40,7 @@ function showScramble() {
         window.allowStartingTimer = true;
     }
 
-    document.getElementById("scramble").innerHTML = "<span style='cursor: pointer;' onclick='displayBox(event, " + window.lastCase + ")'>" + s + "</span>";
+    document.getElementById("scramble").innerHTML = "<span onclick='showHint(this, " + window.lastCase + ")'>" + s + "</span>";
 }
 
 function randomElement(arr) {
@@ -55,7 +73,7 @@ function displayPracticeInfo() {
 function generateScramble() {
     if (window.lastScramble != "")
         document.getElementById("last_scramble").innerHTML = "last scramble: " + window.lastScramble +
-            " <span onclick='displayBox(event," + lastCase + ")' class='caseNameStats'>(" + algsInfo[lastCase]["name"] + ") </span><a class='settings' onclick='confirmUnsel(" + lastCase + ")' style='color:" + document.getElementById("linkscolor_in").value + ";'>unselect</a>";
+            " <span onclick='showHint(this," + lastCase + ")' class='caseNameStats'>(" + algsInfo[lastCase]["name"] + ") </span><a class='settings' onclick='confirmUnsel(" + lastCase + ")'>unselect</a>";
     displayPracticeInfo();
     // get random case
     var caseNum = 0;
@@ -108,17 +126,6 @@ function generateScramble() {
     window.lastCase = caseNum;
 
     return finalAlg;
-}
-
-// http://stackoverflow.com/questions/15604140/replace-multiple-strings-with-multiple-other-strings
-function replaceAll(str, mapObj) {
-    if (!mapObj)
-        return str;
-    var re = new RegExp(Object.keys(mapObj).join("|"), "gi");
-
-    return str.replace(re, function (matched) {
-        return mapObj[matched];
-    });
 }
 
 /*        TIMER        */
@@ -257,11 +264,11 @@ function timerStart() {
     startMilliseconds = d.getTime();
     running = true;
     timeout = setInterval(displayTime, 10);
-    timer.style.color = document.getElementById("textcolor_in").value;
+    timer.style.color = currentColors['--text'];
 }
 
 function timerAfterStop() {
-    timer.style.color = document.getElementById("textcolor_in").value;
+    timer.style.color = currentColors['--text'];
 }
 
 
@@ -375,9 +382,7 @@ function confirmClear() {
     }
 }
 
-function displayBox(event, i) {
-    document.getElementById("hintWindowBack").style.display = 'initial';
-    document.getElementById("hintWindow").style.display = 'initial';
+function showHint(element, i) {
     document.getElementById("boxTitle").innerHTML = '#' + i + " " + algsInfo[i]["name"];
     var algsStr = "Algorithms:<br/>"
     for(const alg of algsInfo[i]["a"]) {
@@ -386,19 +391,14 @@ function displayBox(event, i) {
     document.getElementById("boxalg").innerHTML = algsStr;
     document.getElementById("boxsetup").innerHTML = "Setup:<br/>" + scramblesMap[i][0];
     document.getElementById("boxImg").src = "pic/" + i + ".png";
+    document.getElementById("hintWindow").showModal();
 }
-
-function hideBox() {
-    document.getElementById("hintWindow").style.display = 'none';
-    document.getElementById("hintWindowBack").style.display = 'none';
-}
-
 /// \param r - result instance (see makeResultInstance)
 /// \returns html code for displaying the instance
 function makeHtmlDisplayableTime(r) {
     var isMostRecent = (r == window.timesArray[window.timesArray.length - 1]);
     var classname = isMostRecent ? "timeResultBold" : "timeResult";
-    var styleString = isMostRecent ? "style='color: " + document.getElementById("linkscolor_in").value + "'" : ""; 
+    var styleString = isMostRecent ? "style='color: var(--primary)'" : ""; 
     resultString = "<span class='" + classname + "' " + styleString + " title='" +
         escapeHtml(r["details"]) + "' onclick='confirmRem("
         + r["index"] + ")' >" + r["time"] + "</span>";
@@ -450,7 +450,7 @@ function displayStats() {
                 meanForCase *= i / (i + 1);
                 meanForCase += resultsByCase[case_][i]["ms"] / (i + 1);
             }
-            s += "<div class='timeEntry'><div><span class='caseNameStats' onclick='displayBox(event," + keys[j] + ")'>" + algsInfo[case_]["name"] + "</span>: " + msToHumanReadable(meanForCase) + "</div>" + timesString + "</div>";
+            s += "<div class='timeEntry'><div><span class='caseNameStats' onclick='showHint(this," + keys[j] + ")'>" + algsInfo[case_]["name"] + "</span>: " + msToHumanReadable(meanForCase) + "</div>" + timesString + "</div>";
         }
         el.innerHTML = s;
     }
@@ -496,66 +496,48 @@ function timeStringToMseconds(s) {
 
 // style-related
 
-//saves to localstorage
-function savestyle() {
-    try {
-        localStorage.setItem('bgcolor_in', document.getElementById("bgcolor_in").value);
-        localStorage.setItem('textcolor_in', document.getElementById("textcolor_in").value);
-        localStorage.setItem('linkscolor_in', document.getElementById("linkscolor_in").value);
-        return true;
-    }
-    catch (e) { return false; }
-}
-
 //loads from localstorage
 function loadstyle() {
     try {
-        var bgcolor = localStorage.getItem('bgcolor_in');
-        if (bgcolor.length > 0) {
-            document.getElementById("bgcolor_in").value = localStorage.getItem('bgcolor_in');
-            document.getElementById("textcolor_in").value = localStorage.getItem('textcolor_in');
-            document.getElementById("linkscolor_in").value = localStorage.getItem('linkscolor_in');
-            return true;
+        currentColors = JSON.parse(localStorage.getItem('colors'));
+        for (const [key, value] of Object.entries(currentColors)) {
+            document.getElementById(key).value = value;
         }
     }
     catch (e) { 
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            resetStyle(true);
+            resetStyle('dark');
         } else {
-            resetStyle(false);
+            resetStyle('light');
         }
         return false; 
     }
 }
 
+function changeColor(event) {
+    var newColor = event.target.value;
+    var id = event.target.id;
+    currentColors[id] = newColor;
+    applystyle();
+}
+
 function applystyle() {
-    const bgColor = document.getElementById("bgcolor_in").value;
-    const textColor = document.getElementById("textcolor_in").value;
-    const linksColor = document.getElementById("linkscolor_in").value;
-    document.getElementById("bodyid").style.backgroundColor = bgColor;
-    document.getElementById("box").style.backgroundColor = bgColor;
-    document.getElementById("bodyid").style.color = textColor;
-    document.getElementById("timer").style.color = textColor;
-    var inputs = document.getElementsByClassName("settinginput");
-    Array.prototype.forEach.call(inputs, function (el) {
-        el.style.backgroundColor = bgColor;
-        el.style.color = textColor;
-    });
-    var links = document.getElementsByTagName("a");
-    Array.prototype.forEach.call(links, function (el) {
-        el.style.color = linksColor;
-        el.style.backgroundColor = bgColor;
-    });
-    savestyle();
+    var body = document.body;
+    for (const [k, color] of Object.entries(currentColors)) {
+        body.style.setProperty(k, color);
+        if (k == "--text") {
+            document.getElementById("timer").style.color = color;
+        }
+    }
+    localStorage.setItem('colors', JSON.stringify(currentColors));
 }
 
 function resetStyle(dark) {
-    document.getElementById("bgcolor_in").value = dark ? "#222" : "#f5f5f5";
-    document.getElementById("textcolor_in").value = dark ? "white" : "black";
-    document.getElementById("linkscolor_in").value = dark ? "gold" : "#004411";
+    currentColors = defaultColors[dark];
+    for (const [key, value] of Object.entries(currentColors)) {
+        document.getElementById(key).value = value;
+    }
     applystyle();
-    savestyle();
-    displayStats();
 }
 
 // add key listeners to blur settings inputs
@@ -568,11 +550,6 @@ Array.prototype.forEach.call(inputs, function (el) {
         }
     });
 
-});
-
-document.getElementById("bodyid").addEventListener("keydown", function (event) {
-    if (event.keyCode == 27) // esc
-        hideBox();
 });
 
 loadstyle();

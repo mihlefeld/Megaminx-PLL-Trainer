@@ -50,8 +50,3 @@ function find(arr, x , start=0, end=arr.length) {
 function weightedRandomElement(items, weights) {
     return items[find(weights, Math.random()*weights[weights.length-1])];
 };
-
-String.prototype.replaceAll = function(search, replacement) {
-    var target = this;
-    return target.split(search).join(replacement);
-};

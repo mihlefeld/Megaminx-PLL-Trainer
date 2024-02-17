@@ -1,16 +1,16 @@
-div.borderedContainer {
-    border-width: 2px;
+.borderedContainer {
+    border-width: var(--borderWidth);
     border-style: solid;
-    border-radius: 10px;
-    margin: 5px;
+    border-radius: var(--borderRadius);
+    margin: 0.1em;
 }
 
-div.rowFlex {
+.rowFlex {
     display: flex;
     flex-direction: row;
 }
 
-div.colFlex {
+.colFlex {
     display: flex;
     flex-direction: column;
 }
@@ -29,7 +29,7 @@ body.niceBody {
 }
 
 .pad {
-    padding: 5px 10px;
+    padding: 0.1em 0.2em;
 }
 
 .center {
@@ -44,6 +44,7 @@ body.niceBody {
 a {
     text-decoration: underline;
     cursor: pointer;
+    color: var(--accent);
 }
 
 
@@ -52,35 +53,140 @@ body {
     font-family: "Titilium Web", sans-serif;
     font-weight: 400;
     font-size: 1.3em;
+    --background: #222222;
+    --text: #ffffff;
+    --primary: #ffd700;
+    --secondary: #658320;
+    --accent: #abdf32;
+    --borderRadius: 0.3em;
+    --borderWidth: 0.1em;
+    background-color: var(--background);
+    color: var(--text);
 }
 
 
-#hintWindowBack
+
+dialog::backdrop
 {
-	-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
-	position: fixed;
-	display: none; /* hidden at the beginning */
-	left: 0;
-	top: 0;
-	z-index: 1;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.7);
-	cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.7);
+    cursor: pointer;
 }
 
-#hintWindow {
-	display: none; /* hidden at the beginning */
-	/*-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;*/
+dialog {
+    scale: 0;
+    opacity: 0;
+}
+
+dialog[open] {
 	position: fixed;
-	z-index: 20;
-	background-color: transparent;
     top: 40%;
     left: 50%;
-    -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+    color: var(--text);
+    background-color: var(--background);
+    border-radius: var(--borderRadius);
+    margin: 0;
+    padding: 0.1em;
+    scale: 1;
+    opacity: 1;
 }
+
+dialog:focus {
+    outline: none;
+}
+
 
 html {
     height: 100%;
 }
+
+/* done button that appends ">" on hover */
+.abutton {
+    float: right;
+    display: inline-block;
+    border-radius: var(--borderRadius);
+    border-style: solid;
+    text-align: center;
+    padding: 0.5em;
+    margin: 0.125em;
+    transition: all 0.3s;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    background-color: var(--secondary);
+    color: var(--text);
+    font-size: 1em;
+    border-color: var(--secondary);
+}
+
+.abutton:hover {
+    background-color: var(--accent);
+    color: var(--background);
+    border-color: var(--accent);
+}
+
+.abutton:focus {
+    outline: none;
+}
+
+ /* The switch - the box around the slider */
+ .switch {
+    position: relative;
+    display: inline-block;
+    width: 2.5em;
+    height: 1.3em;
+  }
+  
+  /* Hide default HTML checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--text);
+    -webkit-transition: .4s;
+    transition: .4s;
+    width: unset !important;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 1em;
+    width: 1em;
+    left: 0.15em;
+    bottom: 0.15em;
+    background-color: var(--background);
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: var(--accent);
+  }
+  
+  input:focus + .slider {
+/*     box-shadow: 0 0 1px black; */
+  }
+  
+  input:checked + .slider:before {
+      transform: translateX(1.15em);
+}
+  
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  } 

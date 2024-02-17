@@ -1,5 +1,5 @@
 div.itemSel {
-    background-color: gold;
+    background-color: var(--primary);
     cursor: pointer;
 }
 
@@ -15,49 +15,6 @@ div#cases_selection {
 img.caseImage {
     width: 5em;
     height: 5em;
-}
-
-
-/* done button that appends ">" on hover */
-.abutton {
-    float: right;
-    display: inline-block;
-    border-radius: 10px;
-    border-style: solid;
-    text-align: center;
-    padding: 0.5em;
-    margin: 0.125em;
-    transition: all 0.3s;
-    cursor: pointer;
-    width: 4em;
-}
-
-.abutton span {
-    cursor: pointer;
-    display: inline-block;
-    position: relative;
-    transition: 0.3s;
-}
-
-.abutton span:after {
-    content: '»';
-    position: absolute;
-    opacity: 0;
-    top: 0;
-    right: -20px;
-    transition: 0.3s;
-}
-
-.abutton:hover span {
-    padding-right: 25px;
-}
-
-.abutton:hover {
-}
-
-.abutton:hover span:after {
-    opacity: 1;
-    right: 0;
 }
 
 div#modeButtons {
