@@ -55,6 +55,7 @@ function main() {
     });
     
     loadSelection();
+    displayStats();
     changeMode(0);
     document.getElementById('bodyid').style.display = "flex";
 }
