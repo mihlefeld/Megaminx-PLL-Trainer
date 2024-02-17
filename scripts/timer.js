@@ -55,7 +55,7 @@ function generateScramble() {
     // get random case
     var caseNum = 0;
     if (recapArray.length == 0) { // train
-        if (window.useWeightedChoice) {
+        if (currentSettings['weightedChoice']) {
             var selCasesCounts = []; // count how often each case has appeared already
             for (var i = 0; i < window.selCases.length; i++) {
                 var count = 0;
