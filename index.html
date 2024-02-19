@@ -3,7 +3,7 @@
 
 <head>
 	<title>
-		PLL Trainer
+		OLL Trainer
 	</title>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="styles/main.css?v2">
@@ -42,9 +42,9 @@
 		<div id="mainTable" class="colFlex">
 			<div id="casesBox" class="borderedContainer pad rowFlex center">
 				<div>
-					<a id='selectBtn' onclick='changeMode(0)'>select cases</a><span id='selInfo'></span>
+					<a id='selectBtn' onclick='window.history.back();'>select cases</a><span id='selInfo'></span>
 				</div>
-				<span onclick="document.getElementById('settings').showModal();"
+				<span onclick="decideShowDotToggle(); document.getElementById('settings').showModal();"
 					style="padding: 0.2em; font-size: 2em; height: 1em; width: 1em;"
 					class="material-symbols-outlined abutton">
 					settings
@@ -91,7 +91,7 @@
 				</h3>
 				<h3><a href="https://github.com/mihlefeld/Megaminx-PLL-Trainer">GitHub</a></h3>
 			</div>
-			<span onclick="document.getElementById('settings').showModal();"
+			<span onclick="decideShowDotToggle(); document.getElementById('settings').showModal();"
 				style="height: 1em; width: 1em; padding: 0.2em; font-size: 2em;"
 				class="material-symbols-outlined abutton">
 				settings
@@ -109,26 +109,31 @@
 	</div> <!-- selection layout -->
 
 
-	<dialog id='hintWindow' class="rowFlex borderedContainer" style="flex-wrap: wrap;"
-		onclick="event.target==this && this.close()">
-		<div class="borderedContainer rowFlex center">
-			<img id='boxImg' />
+	<dialog id='hintWindow' class="colFlex borderedContainer" onclick="event.target==this && this.close()">
+		<div id='boxTitle' class="borderedContainer grow rowFlex center pad">
 		</div>
-		<div class="colFlex" style="width: max-content;">
-			<div id='boxTitle' class="borderedContainer grow rowFlex center pad">
+		<div class="borderedContainer colFlex center" style="background-color: var(--primary);">
+			<img id='boxImg'/>
+		</div>
+		<div class="borderedContainer grow rowFlex center pad">
+			<div id='boxsetup'>
 			</div>
-			<div class="borderedContainer grow rowFlex center pad">
-				<div id='boxalg'>
-				</div>
-			</div>
-			<div class="borderedContainer grow rowFlex center pad">
-				<div id='boxsetup'>
-				</div>
+		</div>
+		<div class="borderedContainer grow rowFlex center pad">
+			<div id='boxalg'>
 			</div>
 		</div>
 	</dialog>
 
 	<dialog id="settings" class='colFlex borderedContainer' onclick="event.target==this && this.close()">
+		<div class="settingsEntry" id="dots_toggle_entry">
+			<div>Dot OLLs</div>
+			<!-- Rounded switch -->
+			<label class="switch">
+				<input onclick="toggleDots(this);" type="checkbox" id='dots_toggle'>
+				<span class="slider round"></span>
+			</label>
+		</div>
 		<div class="settingsEntry">
 			<div>Weighted choice</div>
 			<!-- Rounded switch -->

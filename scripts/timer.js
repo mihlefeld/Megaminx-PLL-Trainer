@@ -39,10 +39,10 @@ function confirmUnsel(i) {
 
 function displayPracticeInfo() {
     var s = "";
-    if (window.recapArray.length == 0)
+    if (recapArray.length == 0)
         s += " | train mode: <b>" + window.selCases.length + "</b> cases selected";
     else
-        s += " | recap mode: <b>" + window.recapArray.length + "</b> cases left";
+        s += " | recap mode: <b>" + recapArray.length + "</b> cases left";
 
     document.getElementById("selInfo").innerHTML = s;
 }
@@ -55,6 +55,9 @@ function generateScramble() {
     // get random case
     var caseNum = 0;
     if (recapArray.length == 0) { // train
+        if (window.history.state == 'recap') {
+            window.history.replaceState('train', '', baseUrl + "?train")
+        }
         if (currentSettings['weightedChoice']) {
             var selCasesCounts = []; // count how often each case has appeared already
             for (var i = 0; i < window.selCases.length; i++) {
@@ -89,11 +92,10 @@ function generateScramble() {
             caseNum = randomElement(window.selCases);
     } else { // recap
         // select the case
-        caseNum = randomElement(window.recapArray);
+        caseNum = randomElement(recapArray);
         // remove it from the array
-        const index = window.recapArray.indexOf(caseNum);
-        window.recapArray.splice(index, 1);
-
+        const index = recapArray.indexOf(caseNum);
+        recapArray.splice(index, 1);
     }
     var alg = randomElement(window.scramblesMap[caseNum]);
     var rotation = randomElement(["", " U", " U'", " U2", " U2'"]);
@@ -191,7 +193,6 @@ function timerStart() {
 
 function timerAfterStop() {
     timer.style.color = currentSettings['colors']['--text'];
-    console.log('stop');
 }
 
 
@@ -262,7 +263,7 @@ function showHint(element, i) {
     }
     document.getElementById("boxalg").innerHTML = algsStr;
     document.getElementById("boxsetup").innerHTML = "Setup:<br/>" + scramblesMap[i][0];
-    document.getElementById("boxImg").src = "pic/" + i + ".png";
+    document.getElementById("boxImg").src = "pic/" + i + ".svg";
     document.getElementById("hintWindow").showModal();
 }
 /// \param r - result instance (see makeResultInstance)

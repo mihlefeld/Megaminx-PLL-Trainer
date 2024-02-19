@@ -64,3 +64,9 @@ div#scramble span:hover {
 .caseNameStats:hover {
     color: var(--primary);
 }
+
+img#boxImg {
+    width: 100%;
+    max-width: 7em;
+    margin: 0.4em;
+}

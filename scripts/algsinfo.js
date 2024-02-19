@@ -30,9 +30,11 @@ var algsGroups = {
     "Group X": [134, 135, 136, 137, 138, 139, 140, 141, 142, 143],
     "Group Y": [144, 145, 146, 147, 148, 149],
     "Group Z": [150, 151, 152],
-
-
 };
+
+var optionalGroups = [];
+
+var optionalAlgsCount = 0;
 
 var algsInfo = {
     "1": {

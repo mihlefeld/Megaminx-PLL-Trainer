@@ -1,5 +1,19 @@
+recapArray = [];
 /// \param m = mode: 0 = selection, 1 = practicing, 2 = recap
-function changeMode(m)
+function changeMode(m) {
+    if (m == 1) {
+        window.history.pushState('train', '', baseUrl + "?train");
+    } 
+    else if (m == 2) {
+        window.history.pushState('recap', '', baseUrl + "?recap");
+    } 
+    else if (m == 0) {
+        window.history.replaceState('select', '', baseUrl)
+    }
+    showMode(m);
+}
+
+function showMode(m)
 {
     var pr = document.getElementsByClassName("practice_layout");
     for (var i = 0; i < pr.length; i++)
@@ -12,14 +26,12 @@ function changeMode(m)
     if (m == 2) {
         // recap
         var casesAmount = window.selCases.length;
-        window.recapArray = window.selCases.slice();
-
+        recapArray = window.selCases.slice();
         showScramble();
     }
     else if (m == 1) {
         // practice
         recapArray = [];
-        var casesAmount = window.selCases.length;
         showScramble();
     }
     else if (m == 0) {

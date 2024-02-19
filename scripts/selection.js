@@ -24,8 +24,12 @@ function itemClicked(i) {
 
 function selectAllNone() {
     var nothingSelected = (window.selCases.length == 0);
+    var algs = Object.keys(scramblesMap).length;
+    if (!currentSettings.showDots) {
+        algs -= optionalAlgsCount;
+    }
     if (nothingSelected) {
-        for (var i = 1; i <= Object.keys(scramblesMap).length; ++i)
+        for (var i = 1; i <= algs; ++i)
             selCases.push(i);
     } else {
         selCases = [];
@@ -70,25 +74,40 @@ function makeDivNormal(groupname) {
     for (var j = 0; j < indeces.length; j++) {
         var i = indeces[j]; // case number
         var sel = (selCases.indexOf(i) != -1);
-        s += "<div id='itemTd" + i + "' onclick='itemClicked(" + i + ")' class='borderedContainer " + (sel ? "itemSel" : "itemUnsel") + "' title='" + algsInfo[i]["name"] + "'>" +
-            //"<img width='100px' id='sel"+i+"' src='pic/"+i+".png' > <br>case #"+i+"</div>";
-            "<img class='caseImage' id='sel" + i + "' src='pic/" + i + ".png' ></div>";
+        s += "<div id='itemTd" + i + "' ondblclick='showHint(this, " + i + ")' onclick='itemClicked(" + i + ")' class='borderedContainer " + (sel ? "itemSel" : "itemUnsel") + "' title='" + algsInfo[i]["name"] + "'>" +
+            "<img class='caseImage' id='sel" + i + "' src='pic/" + i + ".svg' ></div>";
     }
     s += "</div></div>";
     return s;
 }
 
+function ensureSelectionMatchesShown() {
+    var algs = Object.keys(scramblesMap).length;
+    if (!currentSettings.showDots) {
+        algs -= optionalAlgsCount;
+    };
+    var newSelected = selCases.filter((value) => {return value <= algs;})
+    selCases = newSelected;
+}
+
 
 /// iterates the scramblesMap and highlights HTML elements according to the selection
 function renderSelection() {
+    var algs = Object.keys(scramblesMap).length;
+    if (!currentSettings.showDots) {
+        algs -= optionalAlgsCount;
+    }
     var s = "";
-    s += "<div><div class='borderedContainer itemUnsel pad' style='width: 100%' onclick='selectAllNone()'><b>All Cases (" + Object.keys(scramblesMap).length + ")</b> | selected: <span id='csi'></span></div></div>";
+    s += "<div><div class='borderedContainer itemUnsel pad' style='width: 100%' onclick='selectAllNone()'><b>All Cases (" + algs + ")</b> | selected: <span id='csi'></span></div></div>";
 
     for (const key of Object.keys(algsGroups)) {
-        s += makeDivNormal(key)
+        if (currentSettings.showDots || !(optionalGroups.includes(key))) {
+            s += makeDivNormal(key)
+        }
     }
 
     document.getElementById("cases_selection").innerHTML = s;
+    ensureSelectionMatchesShown();
     updateTitle();
 }
 
