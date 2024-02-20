@@ -23,7 +23,8 @@ var defaultSettings = {
     'showDots': false
 };
 
-var currentSettings = defaultSettings;
+var currentSettings = {};
+Object.assign(currentSettings, defaultSettings);
 
 function loadSettings() {
     var loaded = localStorage.getItem('settings');

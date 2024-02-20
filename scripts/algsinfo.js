@@ -1010,8 +1010,8 @@ var algsInfo = {
     "129": {
         "name": "V3+",
         "a": [
-            "(R U R2 U' R' U' R U R' U' R' U R2' U R U' R)",
-            "y' (R' U2 R U' F R U R' U' R' F' U' R U R U' R')"
+            "y' (R' U2 R U' F R U R' U' R' F' U' R U R U' R')",
+            "(R U R2 U' R' U' R U R' U' R' U R2' U R U' R)"
         ],
         "s": "R' U' R' U' R U' R2 U R2 U R U R U2' R U' R'"
     },
