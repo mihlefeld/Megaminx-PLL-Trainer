@@ -37,6 +37,7 @@ div#mainTable {
 
 div#casesBox {
     justify-content: space-between;
+    padding: 0.3em;
 }
 
 input {
@@ -59,6 +60,12 @@ div#scramble span {
 
 div#scramble span:hover {
     color: var(--primary);
+}
+
+div#last_scramble {
+    align-items: center;
+    gap: 0.3em;
+    justify-content: space-between;
 }
 
 .caseNameStats:hover {

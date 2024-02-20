@@ -98,7 +98,7 @@ function renderSelection() {
         algs -= optionalAlgsCount;
     }
     var s = "";
-    s += "<div><div class='borderedContainer itemUnsel pad' style='width: 100%' onclick='selectAllNone()'><b>All Cases (" + algs + ")</b> | selected: <span id='csi'></span></div></div>";
+    s += "<div class='borderedContainer itemUnsel pad' onclick='selectAllNone()'><b>All Cases (" + algs + ")</b> | selected: <span id='csi'></span></div>";
 
     for (const key of Object.keys(algsGroups)) {
         if (currentSettings.showDots || !(optionalGroups.includes(key))) {

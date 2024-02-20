@@ -38,19 +38,21 @@ function confirmUnsel(i) {
 }
 
 function displayPracticeInfo() {
+    var caseCount = window.selCases.length;
     var s = "";
     if (recapArray.length == 0)
-        s += " | train mode: <b>" + window.selCases.length + "</b> cases selected";
-    else
-        s += " | recap mode: <b>" + recapArray.length + "</b> cases left";
+        s += "<b>Train " + caseCount + " Cases</b>";
+    else {
+        s += "<b>Recap " + recapArray.length + " Cases</b>";
+    }
 
     document.getElementById("selInfo").innerHTML = s;
 }
 
 function generateScramble() {
     if (window.lastScramble != "")
-        document.getElementById("last_scramble").innerHTML = "last scramble: " + window.lastScramble +
-            " <span onclick='showHint(this," + lastCase + ")' class='caseNameStats'>(" + algsInfo[lastCase]["name"] + ") </span><a class='settings' onclick='confirmUnsel(" + lastCase + ")'>unselect</a>";
+        document.getElementById("last_scramble").innerHTML = "<span>last scramble: " + window.lastScramble +
+            " <span onclick='showHint(this," + lastCase + ")' class='caseNameStats'>(" + algsInfo[lastCase]["name"] + ")</span></span><span class='material-symbols-outlined inlineButton' onclick='confirmUnsel(" + lastCase + ")'>close</span>";
     displayPracticeInfo();
     // get random case
     var caseNum = 0;
@@ -289,52 +291,44 @@ function displayStats() {
     var el = document.getElementById("times");
     if (len == 0) {
         el.innerHTML = "";
-        document.getElementById("infoHeader").innerHTML = '';
+        document.getElementById("infoHeader").innerHTML = '0';
+        document.getElementById('numCases').innerText = '0';
         return;
     }
 
-    var displayByCases = true;
-
-    if (displayByCases) {
         // case-by-case
-        var resultsByCase = []; // [57: [...], 12: [...], ...];
-        for (var i = 0; i < len; i++) {
-            var currentCase = window.timesArray[i]["case"];
-            if (resultsByCase[currentCase] == null)
-                resultsByCase[currentCase] = [];
-            resultsByCase[currentCase].push(window.timesArray[i]);
-        }
-
-        var keys = Object.keys(resultsByCase);
-        keys.sort((n1,n2) => n1 - n2);
-
-        var s = "";
-        // allocate them inside times span
-        for (var j = 0; j < keys.length; j++) {
-            var case_ = keys[j];
-            var timesString = "";
-            var meanForCase = 0.0;
-            var i = 0;
-            for (; i < resultsByCase[case_].length; i++) {
-                timesString += makeHtmlDisplayableTime(resultsByCase[case_][i]);
-                if (i != resultsByCase[case_].length - 1)
-                    timesString += ", ";
-                // avg
-                meanForCase *= i / (i + 1);
-                meanForCase += resultsByCase[case_][i]["ms"] / (i + 1);
-            }
-            s += "<div class='timeEntry'><div><span class='caseNameStats' onclick='showHint(this," + keys[j] + ")'>" + algsInfo[case_]["name"] + "</span>: " + msToHumanReadable(meanForCase) + "</div>" + timesString + "</div>";
-        }
-        el.innerHTML = s;
+    var resultsByCase = {}; // [57: [...], 12: [...], ...];
+    for (var i = 0; i < len; i++) {
+        var currentCase = window.timesArray[i]["case"];
+        if (resultsByCase[currentCase] == null)
+            resultsByCase[currentCase] = [];
+        resultsByCase[currentCase].push(window.timesArray[i]);
     }
-    else {
-        for (var i = 0; i < len; i++) {
-            el.innerHTML += makeHtmlDisplayableTime(window.timesArray[i]);
-            if (i != window.timesArray.length - 1)
-                el.innerHTML += ", ";
+
+    var keys = Object.keys(resultsByCase);
+    keys.sort((n1,n2) => n1 - n2);
+
+    var s = "";
+    // allocate them inside times span
+    for (var j = 0; j < keys.length; j++) {
+        var case_ = keys[j];
+        var timesString = "";
+        var meanForCase = 0.0;
+        var i = 0;
+        for (; i < resultsByCase[case_].length; i++) {
+            timesString += makeHtmlDisplayableTime(resultsByCase[case_][i]);
+            if (i != resultsByCase[case_].length - 1)
+                timesString += ", ";
+            // avg
+            meanForCase *= i / (i + 1);
+            meanForCase += resultsByCase[case_][i]["ms"] / (i + 1);
         }
+        s += "<div class='timeEntry'><div><span class='caseNameStats' onclick='showHint(this," + keys[j] + ")'>" + algsInfo[case_]["name"] + "</span>: " + msToHumanReadable(meanForCase) + "</div>" + timesString + "</div>";
     }
-    document.getElementById("infoHeader").innerHTML = (len == 0 ? '' : len + ' ');
+    el.innerHTML = s;
+    
+    document.getElementById("infoHeader").innerText = (len == 0 ? '' : len + ' ');
+    document.getElementById('numCases').innerText = keys.length;
 }
 
 function makeResultInstance() {

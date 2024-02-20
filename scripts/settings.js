@@ -36,6 +36,45 @@ function saveSettings() {
     localStorage.setItem('settings', JSON.stringify(currentSettings));
 }
 
+
+function clip(x, l, h) {
+    return Math.min(Math.max(x, l), h);
+}
+
+
+function computeButtonText() {
+    var body = document.getElementById('bodyid');
+    var minDiff = 30;
+    var textColor = new Color(currentSettings.colors['--text']);
+    var backgroundColor = new Color(currentSettings.colors['--background']);
+    var primaryColor = new Color(currentSettings.colors['--primary']);
+    var secondaryColor = new Color(currentSettings.colors['--secondary']);
+    var diffText = Math.abs(textColor.lch.l - primaryColor.lch.l);
+    var diffBack = Math.abs(backgroundColor.lch.l - primaryColor.lch.l);
+    var buttonText = diffBack > diffText ? 'var(--background)' : "var(--text)";
+    body.style.setProperty('--buttonText', buttonText);
+    console.log('COMPUTING')
+
+    var diffBackSec = Math.abs(backgroundColor.lch.l - secondaryColor.lch.l);
+    if (diffBackSec < minDiff) {
+        var sign = Math.sign(backgroundColor.lch.l - secondaryColor.lch.l);
+        if (sign == 0) sign = 1;
+        var new_l = backgroundColor.lch.l - sign * minDiff;
+        if (new_l > 100 || new_l < 0) {
+            new_l += sign * minDiff * 2;
+        }
+        secondaryColor.lch.l = new_l;
+    }
+    body.style.setProperty('--linkText', secondaryColor.toString());
+
+
+    secondaryColor.lch.l = clip(secondaryColor.lch.l + (backgroundColor.lch.l < secondaryColor.lch.l ? 10 : -10), 0, 100);
+    body.style.setProperty('--linkTextHover', secondaryColor.toString());
+    primaryColor.lch.l = clip(primaryColor.lch.l + (backgroundColor.lch.l < primaryColor.lch.l ? 10 : -10), 0, 100);
+    body.style.setProperty('--primaryHover', primaryColor.toString());
+
+}
+
 function applySettings() {
     var body = document.getElementById('bodyid');
     document.getElementById('timer').style.fontSize = currentSettings['timerSize'] + "em";
@@ -47,6 +86,7 @@ function applySettings() {
         document.getElementById(key).value = color;
         body.style.setProperty(key, color);
     }
+    computeButtonText();
 }
 
 
@@ -72,16 +112,18 @@ function changeColor(event) {
     var id = event.target.id;
     currentSettings['colors'][id] = newColor;
     document.getElementById('bodyid').style.setProperty(id, newColor);
+    computeButtonText();
     saveSettings();
 }
 
 function resetStyle(dark) {
     var body = document.getElementById('bodyid');
-    currentSettings['colors'] = defaultColors[dark];
+    Object.assign(currentSettings['colors'], defaultColors[dark]);
     for (const [key, value] of Object.entries(currentSettings['colors'])) {
         document.getElementById(key).value = value;
         body.style.setProperty(key, value);
     }
+    computeButtonText();
     saveSettings();
 }
 

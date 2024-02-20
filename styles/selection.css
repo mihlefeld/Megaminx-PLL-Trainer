@@ -18,6 +18,8 @@ img.caseImage {
 
 div#modeButtons {
     position: fixed;
-    bottom: 5%;
-    right: 10%;
+    bottom: 5cqh;
+    right: 5cqw;
+    gap: 0.3em;
+    font-size: 1.3em;
 }
