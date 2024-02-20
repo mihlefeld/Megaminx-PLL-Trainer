@@ -1,12 +1,15 @@
 div.itemSel {
     background-color: var(--accent);
     cursor: pointer;
+    touch-action: manipulation;
 }
 
 div.itemUnsel {
     background-color: transparent;
     cursor: pointer;
+    touch-action: manipulation;
 }
+
 
 div#cases_selection {
     width: fit-content;
