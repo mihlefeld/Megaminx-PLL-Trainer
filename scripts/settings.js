@@ -19,12 +19,14 @@ var defaultSettings = {
     'timerSize': 5.0,
     'scrambleSize': 2,
     'weightedChoice': true,
-    'colors': defaultColors[getColorScheme()],
+    'colors': {},
     'showDots': false
 };
 
 var currentSettings = {};
 Object.assign(currentSettings, defaultSettings);
+Object.assign(currentSettings['colors'], defaultColors[getColorScheme()]);
+
 
 function loadSettings() {
     var loaded = localStorage.getItem('settings');
