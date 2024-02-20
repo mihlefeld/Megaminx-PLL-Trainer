@@ -41,7 +41,6 @@ function clip(x, l, h) {
     return Math.min(Math.max(x, l), h);
 }
 
-
 function computeButtonText() {
     var body = document.getElementById('bodyid');
     var minDiff = 30;
@@ -49,11 +48,15 @@ function computeButtonText() {
     var backgroundColor = new Color(currentSettings.colors['--background']);
     var primaryColor = new Color(currentSettings.colors['--primary']);
     var secondaryColor = new Color(currentSettings.colors['--secondary']);
-    var diffText = Math.abs(textColor.lch.l - primaryColor.lch.l);
+    var accentColor = new Color(currentSettings.colors['--accent']);
     var diffBack = Math.abs(backgroundColor.lch.l - primaryColor.lch.l);
+    var diffText = Math.abs(textColor.lch.l - primaryColor.lch.l);
     var buttonText = diffBack > diffText ? 'var(--background)' : "var(--text)";
+    var secondaryText = Math.abs(backgroundColor.lch.l - secondaryColor.lch.l) > Math.abs(textColor.lch.l - secondaryColor.lch.l) ? "var(--background)" : "var(--text)";
+    var accentText = Math.abs(backgroundColor.lch.l - accentColor.lch.l) > Math.abs(textColor.lch.l - accentColor.lch.l) ? "var(--background)" : "var(--text)";
+    document.getElementById('--secondary').style.color = secondaryText.toString();
+    document.getElementById('--accent').style.color = accentText.toString();
     body.style.setProperty('--buttonText', buttonText);
-    console.log('COMPUTING')
 
     var diffBackSec = Math.abs(backgroundColor.lch.l - secondaryColor.lch.l);
     if (diffBackSec < minDiff) {
@@ -72,7 +75,6 @@ function computeButtonText() {
     body.style.setProperty('--linkTextHover', secondaryColor.toString());
     primaryColor.lch.l = clip(primaryColor.lch.l + (backgroundColor.lch.l < primaryColor.lch.l ? 10 : -10), 0, 100);
     body.style.setProperty('--primaryHover', primaryColor.toString());
-
 }
 
 function applySettings() {

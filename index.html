@@ -3,7 +3,7 @@
 
 <head>
 	<title>
-		PLL Trainer
+		OLL Trainer
 	</title>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 	<link rel="icon" type="image/x-icon" href="icon.png">
@@ -27,6 +27,9 @@
 				'opsz' 24
 		}
 	</style>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"/>
+	<script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.5.2/jscolor.min.js" integrity="sha512-qFhMEJrjI50TwLDGZ7Oi0ksTSWnFOqTNXhlqqUgWnE65S23rWUtQOv+tMNEybkMYSXKgAc3eg/SzkX+qrtJT/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://colorjs.io/dist/color.global.js"></script>
 	<script src="scripts/algsinfo.js?v4"></script>
 	<script src="scripts/algsmap.js?v4"></script>
@@ -186,7 +189,7 @@
 		</div>
 		<div class="settingsEntry">
 			<div>Background</div><input type='text' value='#222222' class='settinginput' id='--background'
-				onchange="changeColor(event);" placeholder='#222222' maxlength='12' />
+				onchange="changeColor(event);" placeholder='#222222' maxlength='12'/>
 		</div>
 		<div class="settingsEntry">
 			<div>Text</div>
@@ -197,7 +200,7 @@
 		<div class="settingsEntry">
 			<div>Primary</div> <input type='text' value='#ffd700' class='settinginput' id='--primary'
 				onchange="changeColor(event);" placeholder='#ffd700' maxlength='12'
-				style="background-color: var(--primary);" />
+				style="background-color: var(--primary); color: var(--buttonText);" />
 		</div>
 		<div class="settingsEntry">
 			<div>Secondary</div> <input type='text' value='#ffd700' class='settinginput' id='--secondary'
