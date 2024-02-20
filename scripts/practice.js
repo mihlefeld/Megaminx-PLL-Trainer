@@ -17,11 +17,11 @@ function showMode(m)
 {
     var pr = document.getElementsByClassName("practice_layout");
     for (var i = 0; i < pr.length; i++)
-        pr[i].style.display = (m != 0) ? 'initial' : 'none';
+        pr[i].style.display = (m != 0) ? 'flex' : 'none';
 
     var se = document.getElementsByClassName("selection_layout");
     for (var i = 0; i < se.length; i++)
-        se[i].style.display = (m == 0) ? 'initial' : 'none';
+        se[i].style.display = (m == 0) ? 'flex' : 'none';
 
     if (m == 2) {
         // recap

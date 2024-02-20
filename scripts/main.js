@@ -21,6 +21,13 @@ function main() {
 
     /// handles keypup and keydown events. Starts timer etc.
     document.getElementById("bodyid").addEventListener("keydown", function (event) {
+        if (dialogOpen) {
+            if (event.code == "Escape") {
+                dialogOpen = false;
+                window.allowStartingTimer = true;
+            }
+            return;
+        }
         // delete hotkey - remove last
         if (event.code == "Delete" && !running) {
             if (!!event.shiftKey)
@@ -30,8 +37,16 @@ function main() {
             return;
         }
 
+        if (event.target.tagName == "INPUT") {
+            return;
+        }
+
         if (event.code == "KeyH" && !running) {
             showHint(null, window.lastCase);
+        }
+
+        if (event.code == "KeyP" && !running) {
+            showHint(null, lastCase);
         }
 
         if (!allowed || !window.allowStartingTimer)
@@ -55,7 +70,7 @@ function main() {
         allowed = true;
         if (!window.allowStartingTimer)
             return; // preventing auto-repeat
-        if (!running && !waiting && (event.keyCode == timerActivatingButton)) {
+        if (!running && !waiting && (event.code == "Space")) {
             timerStart();
         }
         else {
@@ -67,7 +82,7 @@ function main() {
     timerDiv.addEventListener("touchstart", handleTouchStart, false);
     timerDiv.addEventListener("touchend", handleTouchEnd, false);
     window.addEventListener('keydown', function (e) {
-        if (e.keyCode == 32 && e.target == document.body) {
+        if (e.code == 'Space' && (e.target == document.body || e.target.tagName == "DIALOG")) {
             e.preventDefault();
         }
     });

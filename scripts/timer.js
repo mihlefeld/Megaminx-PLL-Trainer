@@ -266,7 +266,7 @@ function showHint(element, i) {
     document.getElementById("boxalg").innerHTML = algsStr;
     document.getElementById("boxsetup").innerHTML = "Setup:<br/>" + scramblesMap[i][0];
     document.getElementById("boxImg").src = "pic/" + i + ".svg";
-    document.getElementById("hintWindow").showModal();
+    openDialog('hintWindow');
 }
 /// \param r - result instance (see makeResultInstance)
 /// \returns html code for displaying the instance

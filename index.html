@@ -27,9 +27,6 @@
 				'opsz' 24
 		}
 	</style>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"/>
-	<script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.5.2/jscolor.min.js" integrity="sha512-qFhMEJrjI50TwLDGZ7Oi0ksTSWnFOqTNXhlqqUgWnE65S23rWUtQOv+tMNEybkMYSXKgAc3eg/SzkX+qrtJT/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://colorjs.io/dist/color.global.js"></script>
 	<script src="scripts/algsinfo.js?v4"></script>
 	<script src="scripts/algsmap.js?v4"></script>
@@ -39,60 +36,54 @@
 	<script src="scripts/practice.js?v4"></script>
 	<script src="scripts/settings.js?v4"></script>
 	<script src="scripts/main.js?v4" defer></script>
-
 </head>
 
 <body class="niceBody" id="bodyid" style="display: none;">
-	<div class="practice_layout colflex" style="display: none;">
-		<div id="mainTable" class="colFlex">
-			<div id="casesBox" class="borderedContainer pad rowFlex center">
-				<span onclick="window.history.back()"
-					class="material-symbols-outlined abutton mbutton">arrow_back</span>
-				<span id='selInfo' style="font-size: 2em;"></span>
-				<span onclick="decideShowDotToggle(); document.getElementById('settings').showModal();"
-					style="padding: 0.2em; font-size: 2em; height: 1em; width: 1em;"
-					class="material-symbols-outlined abutton">
-					settings
+	<div class="practice_layout colFlex" style="display: none;">
+		<div id="casesBox" class="borderedContainer pad rowFlex center">
+			<span onclick="window.history.back()" class="material-symbols-outlined abutton mbutton">arrow_back</span>
+			<span id='selInfo' style="font-size: 2em;"></span>
+			<span onclick="decideShowDotToggle(); openDialog('settings')"
+				style="padding: 0.2em; font-size: 2em; height: 1em; width: 1em;"
+				class="material-symbols-outlined abutton">
+				settings
+		</div>
+		<div class="borderedContainer pad center rowFlex">
+			<div id="scramble"></div>
+		</div>
+		<div id="timer_and_stats" class="rowFlex grow">
+			<div id="timerDiv" class="borderedContainer">
+				<span id="timer" style="text-align: center;">loading, please wait...</span>
 			</div>
-			<div class="borderedContainer pad center rowFlex">
-				<div id="scramble"></div>
-				</span>
-			</div>
-			<div id="timer_and_stats" class="rowFlex grow">
-				<div id="timerDiv" class="borderedContainer">
-					<span id="timer" style="text-align: center;">loading, please wait...</span>
-				</div>
-				<div id="stats" class="borderedContainer colFlex pad" style="gap: 0.3em;">
-					<div class="timeEntry rowFlex" style="justify-content: space-between;">
-						<div class="colFlex">
-							<span>Times <span id='infoHeader'></span></span>
-							<span>Cases <span id="numCases"></span></span>
-						</div>
-						<span onclick="confirmClear();" class="material-symbols-outlined inlineButton">delete</span>
+			<div id="stats" class="borderedContainer colFlex pad" style="gap: 0.3em;">
+				<div class="timeEntry rowFlex" style="justify-content: space-between;">
+					<div class="colFlex">
+						<span>Times <span id='infoHeader'></span></span>
+						<span>Cases <span id="numCases"></span></span>
 					</div>
-					<div id="times" class="colFlex" style="gap: 0.3em;">
-					</div>
+					<span onclick="confirmClear();" class="material-symbols-outlined inlineButton">delete</span>
+				</div>
+				<div id="times" class="colFlex" style="gap: 0.3em;">
 				</div>
 			</div>
-			<!-- case description box -->
-			<div class="borderedContainer pad rowFlex center"
-				style="justify-content: space-between; flex-direction: row-reverse;">
-				<div id='last_scramble' class="rowFlex" style="width: 100%;">
-					<span>Last Scramble</span>
-					<span class='material-symbols-outlined inlineButton'
-						onclick='window.alert("No case to unselect.")'>close</span>
-				</div>
+		</div>
+		<!-- case description box -->
+		<div class="borderedContainer pad rowFlex center"
+			style="justify-content: space-between; flex-direction: row-reverse;">
+			<div id='last_scramble' class="rowFlex" style="width: 100%;">
+				<span>Last Scramble</span>
+				<span class='material-symbols-outlined inlineButton'
+					onclick='window.alert("No case to unselect.")'>close</span>
 			</div>
-
 		</div>
 	</div> <!-- practice_layout -->
 
-	<div class="selection_layout" style="margin: 0.5em;">
+	<div class="selection_layout colFlex" style="margin: 0.5em;">
 		<div class="colFlex">
-			<div class="rowFlex center"  style="justify-content: space-between;">
+			<div class="rowFlex center" style="justify-content: space-between;">
 				<h1>PLL Trainer | <a href=https://mihlefeld.github.io/Megaminx-OLL-Trainer />OLL&nbsp;Trainer</a></h1>
 				<div class="colFlex">
-					<span onclick="decideShowDotToggle(); document.getElementById('settings').showModal();"
+					<span onclick="decideShowDotToggle(); openDialog('settings')"
 						style="height: 1em; width: 1em; padding: 0.2em; font-size: 2em; margin: 0em;"
 						class="material-symbols-outlined abutton">
 						settings
@@ -107,7 +98,7 @@
 				<h3>This trainer is based on Reinier Schippers'
 					<a href="https://reinierschippers.nl/oll_trainer-master/">OLL Trainer.</a>
 					<br>
-					All algs and images are from 
+					All algs and images are from
 					<a
 						href="https://docs.google.com/spreadsheets/d/1lVODoMORbDdVXwTG4RUZPWCSrx8uPx2bvwvXg5tuQYE/edit#gid=165427832">
 						James' Megaminx Algs.</a>
@@ -122,7 +113,7 @@
 	</div> <!-- selection layout -->
 
 
-	<dialog id='hintWindow' class="colFlex borderedContainer" onclick="event.target==this && this.close()">
+	<dialog id='hintWindow' class="colFlex borderedContainer" onclick="dialogClick(event, this)" autofocus=''>
 		<div id='boxTitle' class="borderedContainer grow rowFlex center pad">
 		</div>
 		<div class="borderedContainer colFlex center" style="background-color: var(--primary);">
@@ -138,7 +129,7 @@
 		</div>
 	</dialog>
 
-	<dialog id="settings" class='colFlex borderedContainer' onclick="event.target==this && this.close()">
+	<dialog id="settings" class='colFlex borderedContainer' onclick="dialogClick(event, this)" autofocus="">
 		<div class="settingsEntry" id="dots_toggle_entry">
 			<div>Dot OLLs</div>
 			<!-- Rounded switch -->
@@ -189,28 +180,27 @@
 		</div>
 		<div class="settingsEntry">
 			<div>Background</div><input type='text' value='#222222' class='settinginput' id='--background'
-				onchange="changeColor(event);" placeholder='#222222' maxlength='12'/>
+				onchange="changeColor(event);" placeholder='#222222' />
 		</div>
 		<div class="settingsEntry">
 			<div>Text</div>
 			<div style="background-color: var(--text);"></div><input type='text' value='#ffffff' class='settinginput'
-				id='--text' onchange="changeColor(event);" placeholder='#ffffff' maxlength='12'
+				id='--text' onchange="changeColor(event);" placeholder='oklch(1 0 360)'
 				style="background-color: var(--text); color: var(--background);" />
 		</div>
 		<div class="settingsEntry">
 			<div>Primary</div> <input type='text' value='#ffd700' class='settinginput' id='--primary'
-				onchange="changeColor(event);" placeholder='#ffd700' maxlength='12'
+				onchange="changeColor(event);" placeholder='rgb(1 0.5 1)'
 				style="background-color: var(--primary); color: var(--buttonText);" />
 		</div>
 		<div class="settingsEntry">
 			<div>Secondary</div> <input type='text' value='#ffd700' class='settinginput' id='--secondary'
-				onchange="changeColor(event);" placeholder='#ffd700' maxlength='12'
+				onchange="changeColor(event);" placeholder='lch(0.87 86 88)'
 				style="background-color: var(--secondary);" />
 		</div>
 		<div class="settingsEntry">
 			<div>Accent</div> <input type='text' value='#ffd700' class='settinginput' id='--accent'
-				onchange="changeColor(event);" placeholder='#ffd700' maxlength='12'
-				style="background-color: var(--accent);" />
+				onchange="changeColor(event);" placeholder='#ffd700' style="background-color: var(--accent);" />
 		</div>
 	</dialog>
 </body>
