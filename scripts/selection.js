@@ -1,6 +1,16 @@
 var selCases = [1, 2];
 
 function updateTitle() {
+    var algs = Object.keys(scramblesMap).length;
+    if (!currentSettings.showDots) {
+        algs -= optionalAlgsCount;
+    }
+    var allSelector = document.getElementById('allSelector');
+    if (selCases.length == algs) {
+        allSelector.className = 'borderedContainer itemSel pad';
+    } else {
+        allSelector.className = 'borderedContainer itemUnsel pad';
+    }
     document.getElementById("csi").innerHTML = selCases.length;
 }
 
@@ -16,8 +26,23 @@ function itemClicked(i) {
         selCases.splice(index, 1);
     else
         selCases.push(i);
-
-    document.getElementById("itemTd" + i).className = (wasSelected ? "itemUnsel" : "itemSel") + " borderedContainer";
+    var element = document.getElementById("itemTd" + i);
+    element.className = (wasSelected ? "itemUnsel" : "itemSel") + " borderedContainer";
+    var groupElement = element.parentElement.previousElementSibling;
+    var groupWasSelected = groupElement.classList[1] == 'itemSel';
+    if (groupWasSelected && wasSelected) {
+        groupElement.className = 'borderedContainer itemUnsel pad';
+    } 
+    if (!groupWasSelected && !wasSelected) {
+        var groupElements = element.parentElement.childNodes;
+        var selectedCount = 0;
+        for (var i = 0; i < groupElements.length; i++) {
+            selectedCount += groupElements[i].classList[0] == 'itemSel';
+        }
+        if (selectedCount == groupElements.length) {
+            groupElement.className = 'borderedContainer itemSel pad';
+        }
+    }
     saveSelection();
     updateTitle();
 }
@@ -77,7 +102,7 @@ function makeDivNormal(groupname) {
         var i = indeces[j]; // case number
         var sel = (selCases.indexOf(i) != -1);
         allSelected &= sel;
-        s += "<div id='itemTd" + i + "' ondblclick='showHint(this, " + i + ")' onclick='itemClicked(" + i + ")' class='borderedContainer " + (sel ? "itemSel" : "itemUnsel") + "' title='" + algsInfo[i]["name"] + "'>" +
+        s += "<div id='itemTd" + i + "' ondblclick='showHint(this, " + i + ")' onclick='itemClicked(" + i + ")' class='" + (sel ? "itemSel" : "itemUnsel") + " borderedContainer' title='" + algsInfo[i]["name"] + "'>" +
             "<img class='caseImage' id='sel" + i + "' src='pic/" + i + ".svg' ></div>";
     }
     s = "<div class='colFlex' style='width: fit-content'> <div class='borderedContainer " + (allSelected ? "itemSel" : "itemUnsel") + " pad'" + s;
@@ -102,7 +127,7 @@ function renderSelection() {
         algs -= optionalAlgsCount;
     }
     var s = "";
-    s += "<div class='borderedContainer  "+ (selCases.length == algs ? "itemSel" : "itemUnsel") + " pad' onclick='selectAllNone()'><b>All Cases (" + algs + ")</b> | selected: <span id='csi'></span></div>";
+    s += "<div id='allSelector' class='borderedContainer  "+ (selCases.length == algs ? "itemSel" : "itemUnsel") + " pad' onclick='selectAllNone()'><b>All Cases (" + algs + ")</b> | selected: <span id='csi'></span></div>";
 
     for (const key of Object.keys(algsGroups)) {
         if (currentSettings.showDots || !(optionalGroups.includes(key))) {

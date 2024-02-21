@@ -4,6 +4,7 @@ if (timesArray == null) // todo fix when figure out why JSON.parse("[]") returns
     timesArray = [];
 var lastScramble = "";
 var lastCase = 0;
+var hintCase = 0;
 
 /// invokes generateScramble() and sets scramble string
 function showScramble() {
@@ -257,7 +258,7 @@ function confirmClear() {
     }
 }
 
-function showHint(element, i) {
+function renderHint(i) {
     document.getElementById("boxTitle").innerHTML = '#' + i + " " + algsInfo[i]["name"];
     var algsStr = "Algorithms:<br/>"
     for(const alg of algsInfo[i]["a"]) {
@@ -266,7 +267,23 @@ function showHint(element, i) {
     document.getElementById("boxalg").innerHTML = algsStr;
     document.getElementById("boxsetup").innerHTML = "Setup:<br/>" + scramblesMap[i][0];
     document.getElementById("boxImg").src = "pic/" + i + ".svg";
+}
+
+function showHint(element, i) {
+    renderHint(i);
+    hintCase = i;
     openDialog('hintWindow');
+}
+
+function previousCase() {
+    hintCase = Math.max(hintCase - 1, 1);
+    renderHint(hintCase);
+}
+
+function nextCase() {
+    var length = Object.keys(algsInfo).length;
+    hintCase = Math.min(hintCase + 1, length);
+    renderHint(hintCase);
 }
 /// \param r - result instance (see makeResultInstance)
 /// \returns html code for displaying the instance

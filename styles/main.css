@@ -92,9 +92,9 @@ dialog {
 
 dialog[open] {
     position: fixed;
-    top: 40%;
+    top: 20%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     color: var(--text);
     background-color: var(--background2);
     border-radius: var(--borderRadius);
@@ -133,6 +133,8 @@ html {
     color: var(--buttonText);
     font-size: 1em;
     border-color: var(--primary);
+    touch-action: manipulation;
+    user-select: none;
 }
 
 .mbutton {
@@ -141,6 +143,8 @@ html {
     padding: 0.2em !important;
     font-size: 2em !important;
     margin: 0em !important;
+    touch-action: manipulation;
+    user-select: none;
 }
 
 .abutton:hover {

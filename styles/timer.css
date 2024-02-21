@@ -75,3 +75,7 @@ img#boxImg {
     max-width: 7em;
     margin: 0.4em;
 }
+
+dialog#hintWindow {
+    width: 31em;
+}

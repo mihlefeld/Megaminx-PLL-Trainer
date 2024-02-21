@@ -26,6 +26,11 @@ function main() {
                 dialogOpen = false;
                 window.allowStartingTimer = true;
             }
+            if (event.code == "ArrowLeft") {
+                previousCase();
+            } else if (event.code == 'ArrowRight') {
+                nextCase();
+            }
             return;
         }
         // delete hotkey - remove last
