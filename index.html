@@ -11,6 +11,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/selection.css?v2">
 	<link rel="stylesheet" type="text/css" href="styles/timer.css?v2">
 	<link rel="stylesheet" type="text/css" href="styles/settings.css?v2">
+	<link rel="stylesheet" type="text/css" href="styles/hint.css?v2">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link
@@ -114,14 +115,14 @@
 
 
 	<dialog id='hintWindow' class="colFlex borderedContainer" onclick="dialogClick(event, this)" autofocus=''>
-		<div id='boxTitle' class="borderedContainer grow rowFlex center pad">
+		<div class="borderedContainer rowFlex pad center" style="justify-content: space-between;">
+			<span onclick="previousCase()" class="material-symbols-outlined abutton prevNext">arrow_back</span>
+			<span id='boxTitle'>
+			</span>
+			<span onclick="nextCase()" class="material-symbols-outlined abutton prevNext" >arrow_forward</span>
 		</div>
 		<div class="borderedContainer colFlex center" style="background-color: var(--primary);">
 			<img id='boxImg' />
-		</div>
-		<div class="borderedContainer rowFlex pad" style="justify-content: space-between;">
-			<span onclick="previousCase()" class="material-symbols-outlined abutton" style="padding: 0.1em; width: 2em; font-size: 2em;">arrow_back</span>
-			<span onclick="nextCase()" class="material-symbols-outlined abutton" style="padding: 0.1em; width: 2em; font-size: 2em;">arrow_forward</span>
 		</div>
 		<div class="borderedContainer grow rowFlex center pad">
 			<div id='boxsetup'>
@@ -195,7 +196,7 @@
 		<div class="settingsEntry">
 			<div>Primary</div> <input type='text' value='#ffd700' class='settinginput' id='--primary'
 				onchange="changeColor(event);" placeholder='rgb(1 0.5 1)'
-				style="background-color: var(--primary); color: var(--buttonText);" />
+				style="background-color: var(--primary); color: var(--primaryText);" />
 		</div>
 		<div class="settingsEntry">
 			<div>Secondary</div> <input type='text' value='#ffd700' class='settinginput' id='--secondary'

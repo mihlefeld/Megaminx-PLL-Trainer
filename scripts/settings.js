@@ -89,22 +89,22 @@ function computeColors() {
     var accentText = contrastBackAccent > contrastTextAccent ? "var(--background)" : "var(--text)";
     document.getElementById('--secondary').style.color = secondaryText;
     document.getElementById('--accent').style.color = accentText;
-    body.style.setProperty('--buttonText', buttonText);
+    body.style.setProperty('--primaryText', buttonText);
     body.style.setProperty('--accentText', accentText);
 
     if (contrastBackSecondary < minContrast) {
         var sign = secondaryColor.oklch.l > backgroundColor.oklch.l ? 1 : -1;
         secondaryColor.oklch.l += sign * 0.3;
     }
-    body.style.setProperty('--linkText', toOklchStr(secondaryColor));
+    body.style.setProperty('--secondaryText', toOklchStr(secondaryColor));
     secondaryColor.oklch.l += backgroundColor.oklch.l > secondaryColor.oklch.l ? 0.1 : -0.1;
-    body.style.setProperty('--linkTextHover', toOklchStr(secondaryColor));
+    body.style.setProperty('--secondaryTextHover', toOklchStr(secondaryColor));
     primaryColor.oklch.l += backgroundColor.oklch.l > primaryColor.oklch.l ? 0.1 : -0.1;
     body.style.setProperty('--primaryHover', toOklchStr(primaryColor));
     accentColor.oklch.l += backgroundColor.oklch.l > accentColor.oklch.l ? 0.1 : -0.1;
     body.style.setProperty('--accentHover', toOklchStr(accentColor));
-    backgroundColor.oklch.l += backgroundColor.oklch.l < textColor.oklch.l ? -0.1 : 0.1;
-    body.style.setProperty('--background2', toOklchStr(backgroundColor));
+    backgroundColor.oklch.l -= 0.1;
+    body.style.setProperty('--backgroundDarker', toOklchStr(backgroundColor));
     document.getElementById('timer').style.color = toOklchStr(textColor);
 }
 

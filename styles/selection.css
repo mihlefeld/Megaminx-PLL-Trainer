@@ -12,9 +12,8 @@ div.itemUnsel {
     touch-action: manipulation;
     background-color: var(--primary);
     border-color: var(--primary);
-    color: var(--buttonText);
+    color: var(--primaryText);
 }
-
 
 div#cases_selection {
     width: fit-content;

@@ -42,18 +42,18 @@ body.niceBody {
 .caseNameStats {
     font-weight: bold;
     cursor: pointer;
+    color: var(--secondaryText);
 }
 
 a {
     text-decoration: underline;
     cursor: pointer;
-    color: var(--linkText);
+    color: var(--secondaryText);
 }
 
 a:hover {
-    color: var(--linkTextHover);
+    color: var(--secondaryTextHover);
 }
-
 
 
 body {
@@ -61,23 +61,22 @@ body {
     font-weight: 400;
     font-size: 1.3em;
     --background: #222222;
+    --backgroundDarker: #111;
     --text: #ffffff;
     --primary: #ffd700;
-    --secondary: #658320;
-    --accent: #abdf32;
-    --buttonText: var(--text);
-    --linkText: var(--secondary);
-    --linkTextHover: var(--secondary);
     --primaryHover: var(--primary);
+    --primaryText: var(--text);
+    --secondary: #658320;
+    --secondaryText: var(--secondary);
+    --secondaryTextHover: var(--secondary);
+    --accent: #abdf32;
     --accentHover: var(--accent);
     --accentText: var(--background);
-    --background2: #333;
     --borderRadius: 0.3em;
     --borderWidth: 0.13em;
-    background-color: var(--background2);
+    background-color: var(--backgroundDarker);
     color: var(--text);
 }
-
 
 
 dialog::backdrop {
@@ -96,7 +95,7 @@ dialog[open] {
     left: 50%;
     transform: translateX(-50%);
     color: var(--text);
-    background-color: var(--background2);
+    background-color: var(--backgroundDarker);
     border-radius: var(--borderRadius);
     margin: 0;
     padding: 0.3em;
@@ -119,7 +118,6 @@ html {
 
 /* done button that appends ">" on hover */
 .abutton {
-    float: right;
     display: inline-block;
     border-radius: var(--borderRadius);
     border-style: solid;
@@ -130,11 +128,14 @@ html {
     cursor: pointer;
     box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
     background-color: var(--primary);
-    color: var(--buttonText);
+    color: var(--primaryText);
     font-size: 1em;
     border-color: var(--primary);
     touch-action: manipulation;
     user-select: none;
+    display: flex !important;;
+    justify-content: center;
+    align-items: center;
 }
 
 .mbutton {
@@ -159,13 +160,13 @@ html {
 }
 
 .inlineButton {
-    color: var(--linkText);
+    color: var(--secondaryText);
     font-size: 2.3em !important;
     cursor: pointer;
 }
 
 .inlineButton:hover {
-    color: var(--linkTextHover);
+    color: var(--secondaryTextHover);
 }
 
 /* The switch - the box around the slider */
@@ -210,11 +211,6 @@ html {
 input:checked+.slider {
     background-color: var(--primary);
 }
-
-input:focus+.slider {
-    /*     box-shadow: 0 0 1px black; */
-}
-
 input:checked+.slider:before {
     transform: translateX(1.65em);
 }

@@ -10,7 +10,7 @@ function changeMode(m) {
     else if (m == 0) {
         window.history.replaceState('select', '', baseUrl);
     }
-    document.getElementById('bodyid').style.background = m == 0 ? 'var(--background)' : 'var(--background2)'; 
+    document.getElementById('bodyid').style.background = m == 0 ? 'var(--background)' : 'var(--backgroundDarker)'; 
     showMode(m);
 }
 

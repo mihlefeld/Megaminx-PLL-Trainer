@@ -17,7 +17,6 @@ dialog#settings input[type=text] {
     text-align: center;
     background-color: var(--background);
     color: var(--text);
-      
 }
 
 input[type=text]:focus {

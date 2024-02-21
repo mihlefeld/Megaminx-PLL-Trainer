@@ -49,7 +49,7 @@ span.timeResult {
 
 span.timeResultBold {
     cursor: pointer;
-    color: var(--primary);
+    color: var(--secondaryText);
 }
 
 div#scramble span {
@@ -66,16 +66,8 @@ div#last_scramble {
     justify-content: space-between;
 }
 
+
 .caseNameStats:hover {
-    color: var(--primary);
+    color: var(--secondaryTextHover);
 }
 
-img#boxImg {
-    width: 100%;
-    max-width: 7em;
-    margin: 0.4em;
-}
-
-dialog#hintWindow {
-    width: 31em;
-}
