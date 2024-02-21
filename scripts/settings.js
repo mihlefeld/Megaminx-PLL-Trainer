@@ -1,18 +1,18 @@
 var defaultColors = {
-    'dark': {
-        '--text': "#f3f1e7",
-        '--background': "#222222",
-        '--primary': "#a59855",
-        '--secondary': "#405e31",
-        '--accent': "#ffe252"
+    'light': {
+        '--text': "oklch(25% 0 0)",
+        '--background': "oklch(96% 0.01 97)",
+        '--primary': "oklch(75% 0.09 99)",
+        '--secondary': "oklch(45% 0.08 136)",
+        '--accent': "oklch(80% 0.16 98)"
     },
-    "light": {
-        '--text': "#18160c",
-        '--background': "#fbfaf7",
-        '--primary': "#aa9c59",
-        '--secondary': "#b1cfa2",
-        '--accent': "#ffe252"
-    }
+    "dark": {
+        '--text': "oklch(99% 0 91)",
+        '--background': "oklch(33% 0.0 0)",
+        '--primary': "oklch(69% 0.09 98)",
+        '--secondary': "oklch(82% 0.07 135)", 
+        '--accent': "oklch(91% 0.16 98)"
+    }  
 }
 var defaultSettings = {
     'baseSize': isMobile() ? 2.5 : 1.3,
@@ -44,54 +44,77 @@ function clip(x, l, h) {
     return Math.min(Math.max(x, l), h);
 }
 
-function computeButtonText() {
+function toSrgb(color) {
+    return color.toGamut({'space': 'sRGB'});
+}
+
+function toOklchStr(color) {
+    var s = 'oklch(';
+    s += Math.round(100 * color.oklch.l) + '% ';
+    s += Math.round(100 * color.oklch.c) / 100 + ' ';
+    var h = Number.isNaN(color.oklch.h) ? 0 : color.oklch.h;
+    s += Math.round(h) + ')'
+    return s;
+}
+
+
+function computeColors() {
     var body = document.getElementById('bodyid');
-    var minDiff = 30;
-    var textColor = new Color(currentSettings.colors['--text']);
-    var backgroundColor = new Color(currentSettings.colors['--background']);
-    var primaryColor = new Color(currentSettings.colors['--primary']);
-    var secondaryColor = new Color(currentSettings.colors['--secondary']);
-    var accentColor = new Color(currentSettings.colors['--accent']);
-    var diffBack = Math.abs(backgroundColor.lch.l - primaryColor.lch.l);
-    var diffText = Math.abs(textColor.lch.l - primaryColor.lch.l);
-    var buttonText = diffBack > diffText ? 'var(--background)' : "var(--text)";
-    var secondaryText = Math.abs(backgroundColor.lch.l - secondaryColor.lch.l) > Math.abs(textColor.lch.l - secondaryColor.lch.l) ? "var(--background)" : "var(--text)";
-    var accentText = Math.abs(backgroundColor.lch.l - accentColor.lch.l) > Math.abs(textColor.lch.l - accentColor.lch.l) ? "var(--background)" : "var(--text)";
-    document.getElementById('--secondary').style.color = secondaryText.toString();
-    document.getElementById('--accent').style.color = accentText.toString();
-    body.style.setProperty('--buttonText', buttonText);
-
-    var diffBackSec = Math.abs(backgroundColor.lch.l - secondaryColor.lch.l);
-    if (diffBackSec < minDiff) {
-        var sign = Math.sign(backgroundColor.lch.l - secondaryColor.lch.l);
-        if (sign == 0) sign = 1;
-        var new_l = backgroundColor.lch.l - sign * minDiff;
-        if (new_l > 100 || new_l < 0) {
-            new_l += sign * minDiff * 2;
-        }
-        secondaryColor.lch.l = new_l;
+    var contrastAlg = 'WCAG21';
+    var minContrast = 3;
+    var textColor = toSrgb(new Color(currentSettings.colors['--text']));
+    var backgroundColor = toSrgb(new Color(currentSettings.colors['--background']));
+    var primaryColor = toSrgb(new Color(currentSettings.colors['--primary']));
+    var secondaryColor = toSrgb(new Color(currentSettings.colors['--secondary']));
+    var accentColor = toSrgb(new Color(currentSettings.colors['--accent']));
+    currentSettings.colors['--text'] = toOklchStr(textColor);
+    currentSettings.colors['--background'] = toOklchStr(backgroundColor);
+    currentSettings.colors['--primary'] = toOklchStr(primaryColor);
+    currentSettings.colors['--secondary'] = toOklchStr(secondaryColor);
+    currentSettings.colors['--accent'] = toOklchStr(accentColor);
+    for (const [key, color] of Object.entries(currentSettings['colors'])) {
+        document.getElementById(key).value = color;
+        body.style.setProperty(key, color);
     }
-    body.style.setProperty('--linkText', secondaryColor.toString());
 
+    var contrastBackText = backgroundColor.contrast(textColor, contrastAlg);
+    var contrastBackPrimary = backgroundColor.contrast(primaryColor, contrastAlg);
+    var contrastBackSecondary = backgroundColor.contrast(secondaryColor, contrastAlg);
+    var contrastBackAccent = backgroundColor.contrast(accentColor, contrastAlg);
+    var contrastTextPrimary = textColor.contrast(primaryColor, contrastAlg);
+    var contrastTextSecondary = textColor.contrast(secondaryColor, contrastAlg);
+    var contrastTextAccent = textColor.contrast(accentColor, contrastAlg);
+    var buttonText = contrastBackPrimary > contrastTextPrimary ? 'var(--background)' : "var(--text)";
+    var secondaryText = contrastBackSecondary > contrastTextSecondary ? "var(--background)" : "var(--text)";
+    var accentText = contrastBackAccent > contrastTextAccent ? "var(--background)" : "var(--text)";
+    document.getElementById('--secondary').style.color = secondaryText;
+    document.getElementById('--accent').style.color = accentText;
+    body.style.setProperty('--buttonText', buttonText);
+    body.style.setProperty('--accentText', accentText);
 
-    secondaryColor.lch.l = clip(secondaryColor.lch.l + (backgroundColor.lch.l < secondaryColor.lch.l ? 10 : -10), 0, 100);
-    body.style.setProperty('--linkTextHover', secondaryColor.toString());
-    primaryColor.lch.l = clip(primaryColor.lch.l + (backgroundColor.lch.l < primaryColor.lch.l ? 10 : -10), 0, 100);
-    body.style.setProperty('--primaryHover', primaryColor.toString());
+    if (contrastBackSecondary < minContrast) {
+        var sign = secondaryColor.oklch.l > backgroundColor.oklch.l ? 1 : -1;
+        secondaryColor.oklch.l += sign * 0.3;
+    }
+    body.style.setProperty('--linkText', toOklchStr(secondaryColor));
+    secondaryColor.oklch.l += backgroundColor.oklch.l > secondaryColor.oklch.l ? 0.1 : -0.1;
+    body.style.setProperty('--linkTextHover', toOklchStr(secondaryColor));
+    primaryColor.oklch.l += backgroundColor.oklch.l > primaryColor.oklch.l ? 0.1 : -0.1;
+    body.style.setProperty('--primaryHover', toOklchStr(primaryColor));
+    accentColor.oklch.l += backgroundColor.oklch.l > accentColor.oklch.l ? 0.1 : -0.1;
+    body.style.setProperty('--accentHover', toOklchStr(accentColor));
+    backgroundColor.oklch.l += backgroundColor.oklch.l < textColor.oklch.l ? -0.1 : 0.1;
+    body.style.setProperty('--background2', toOklchStr(backgroundColor));
+    document.getElementById('timer').style.color = toOklchStr(textColor);
 }
 
 function applySettings() {
-    var body = document.getElementById('bodyid');
     document.getElementById('timer').style.fontSize = currentSettings['timerSize'] + "em";
     document.getElementById('scramble').style.fontSize = currentSettings['scrambleSize'] + "em";
     document.getElementById('bodyid').style.fontSize = currentSettings['baseSize'] + "em";
     document.getElementById("weighted_choice_on_off").checked = currentSettings['weightedChoice'];
     document.getElementById("dots_toggle").checked = currentSettings['showDots'];
-    for (const [key, color] of Object.entries(currentSettings['colors'])) {
-        document.getElementById(key).value = color;
-        body.style.setProperty(key, color);
-    }
-    computeButtonText();
+    computeColors();
 }
 
 
@@ -117,7 +140,7 @@ function changeColor(event) {
     var id = event.target.id;
     currentSettings['colors'][id] = newColor;
     document.getElementById('bodyid').style.setProperty(id, newColor);
-    computeButtonText();
+    computeColors();
     saveSettings();
 }
 
@@ -128,7 +151,7 @@ function resetStyle(dark) {
         document.getElementById(key).value = value;
         body.style.setProperty(key, value);
     }
-    computeButtonText();
+    computeColors();
     saveSettings();
 }
 

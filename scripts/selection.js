@@ -66,17 +66,21 @@ function selectCaseGroup(name) {
 }
 
 function makeDivNormal(groupname) {
-    var s = "<div class='colFlex' style='width: fit-content'>";
+    var s = "";
     var indeces = algsGroups[groupname];
-    s += "<div class='borderedContainer itemUnsel pad' onclick='selectCaseGroup(\"" + groupname
+    
+    s += " onclick='selectCaseGroup(\"" + groupname
         + "\")'><b>" + groupname + "</b></div>";
     s += "<div class='rowFlex' style='flex-wrap: wrap'>";
+    var allSelected = true;
     for (var j = 0; j < indeces.length; j++) {
         var i = indeces[j]; // case number
         var sel = (selCases.indexOf(i) != -1);
+        allSelected &= sel;
         s += "<div id='itemTd" + i + "' ondblclick='showHint(this, " + i + ")' onclick='itemClicked(" + i + ")' class='borderedContainer " + (sel ? "itemSel" : "itemUnsel") + "' title='" + algsInfo[i]["name"] + "'>" +
             "<img class='caseImage' id='sel" + i + "' src='pic/" + i + ".svg' ></div>";
     }
+    s = "<div class='colFlex' style='width: fit-content'> <div class='borderedContainer " + (allSelected ? "itemSel" : "itemUnsel") + " pad'" + s;
     s += "</div></div>";
     return s;
 }
@@ -86,9 +90,9 @@ function ensureSelectionMatchesShown() {
     if (!currentSettings.showDots) {
         algs -= optionalAlgsCount;
     };
-    var newSelected = selCases.filter((value) => {return value <= algs;})
+    var newSelected = selCases.filter((value) => {return value <= algs;}) 
     selCases = newSelected;
-}
+}  
 
 
 /// iterates the scramblesMap and highlights HTML elements according to the selection
@@ -98,7 +102,7 @@ function renderSelection() {
         algs -= optionalAlgsCount;
     }
     var s = "";
-    s += "<div class='borderedContainer itemUnsel pad' onclick='selectAllNone()'><b>All Cases (" + algs + ")</b> | selected: <span id='csi'></span></div>";
+    s += "<div class='borderedContainer  "+ (selCases.length == algs ? "itemSel" : "itemUnsel") + " pad' onclick='selectAllNone()'><b>All Cases (" + algs + ")</b> | selected: <span id='csi'></span></div>";
 
     for (const key of Object.keys(algsGroups)) {
         if (currentSettings.showDots || !(optionalGroups.includes(key))) {

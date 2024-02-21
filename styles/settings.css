@@ -9,7 +9,7 @@ dialog#settings input[type=text] {
     cursor: pointer;
     border-color: var(--text);
     border-radius: var(--borderRadius);
-    width: 10em;
+    width: 12em;
     height: fit-content;
     margin: 0;
     padding: 0;
@@ -17,7 +17,7 @@ dialog#settings input[type=text] {
     text-align: center;
     background-color: var(--background);
     color: var(--text);
-    
+      
 }
 
 input[type=text]:focus {
@@ -32,6 +32,9 @@ input[type=text]:focus {
     flex-direction: row;
     justify-content: space-between;
     gap: 1em;
+    background-color: var(--background);
+    border-radius: var(--borderRadius);
+    padding: 0.3em;
 }
 
 dialog#settings button {

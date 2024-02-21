@@ -23,12 +23,12 @@ div#times {
 }
 
 div#timer_and_stats {
-    height: 60%;
+    min-height: 1em;
 }
 
 div.practice_layout {
     width: 100%;
-    flex-grow: 1;
+    height: 100%;
     padding: 0.5em;
     box-sizing: border-box;
 }

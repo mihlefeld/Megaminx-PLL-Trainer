@@ -8,8 +8,9 @@ function changeMode(m) {
         window.history.pushState('recap', '', baseUrl + "?recap");
     } 
     else if (m == 0) {
-        window.history.replaceState('select', '', baseUrl)
+        window.history.replaceState('select', '', baseUrl);
     }
+    document.getElementById('bodyid').style.background = m == 0 ? 'var(--background)' : 'var(--background2)'; 
     showMode(m);
 }
 

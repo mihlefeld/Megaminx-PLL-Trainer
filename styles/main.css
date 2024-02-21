@@ -2,25 +2,28 @@
     border-width: var(--borderWidth);
     border-style: solid;
     border-radius: var(--borderRadius);
-    margin: 0.1em;
+    background-color: var(--background);
+    border-color: transparent;
 }
 
 .rowFlex {
     display: flex;
     flex-direction: row;
+    gap: 0.2em;
 }
 
 .colFlex {
     display: flex;
     flex-direction: column;
-}
+    gap: 0.2em;
+}  
 
 
 body.niceBody {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100%;
+    height: 100%; 
     margin: 0;
 }
 
@@ -29,7 +32,7 @@ body.niceBody {
 }
 
 .pad {
-    padding: 0.1em 0.2em;
+    padding: 0.3em;
 }
 
 .center {
@@ -66,9 +69,12 @@ body {
     --linkText: var(--secondary);
     --linkTextHover: var(--secondary);
     --primaryHover: var(--primary);
+    --accentHover: var(--accent);
+    --accentText: var(--background);
+    --background2: #333;
     --borderRadius: 0.3em;
-    --borderWidth: 0.1em;
-    background-color: var(--background);
+    --borderWidth: 0.13em;
+    background-color: var(--background2);
     color: var(--text);
 }
 
@@ -90,10 +96,10 @@ dialog[open] {
     left: 50%;
     transform: translate(-50%, -50%);
     color: var(--text);
-    background-color: var(--background);
+    background-color: var(--background2);
     border-radius: var(--borderRadius);
     margin: 0;
-    padding: 0.1em;
+    padding: 0.3em;
     scale: 1;
     opacity: 1;
     box-shadow: 5px 5px 30px black;
@@ -162,7 +168,7 @@ html {
 .switch {
     position: relative;
     display: inline-block;
-    width: 2.5em;
+    width: 3em;
     height: 1.3em;
 }
 
@@ -182,9 +188,7 @@ html {
     right: 0;
     bottom: 0;
     background-color: var(--text);
-    -webkit-transition: .4s;
     transition: .4s;
-    width: unset !important;
 }
 
 .slider:before {
@@ -208,7 +212,7 @@ input:focus+.slider {
 }
 
 input:checked+.slider:before {
-    transform: translateX(1.15em);
+    transform: translateX(1.65em);
 }
 
 

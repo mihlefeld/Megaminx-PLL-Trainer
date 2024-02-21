@@ -2,12 +2,17 @@ div.itemSel {
     background-color: var(--accent);
     cursor: pointer;
     touch-action: manipulation;
+    border-color: var(--accent);
+    color: var(--accentText);
 }
 
 div.itemUnsel {
     background-color: transparent;
     cursor: pointer;
     touch-action: manipulation;
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: var(--buttonText);
 }
 
 
