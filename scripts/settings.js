@@ -4,7 +4,7 @@ var defaultColors = {
         '--background': "oklch(96% 0.01 97)",
         '--primary': "oklch(75% 0.09 99)",
         '--secondary': "oklch(45% 0.08 136)",
-        '--accent': "oklch(80% 0.16 98)"
+        '--accent': "oklch(85% 0.16 98)"
     },
     "dark": {
         '--text': "oklch(99% 0 91)",
