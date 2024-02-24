@@ -37,12 +37,13 @@
 	<script src="scripts/practice.js?v4"></script>
 	<script src="scripts/settings.js?v4"></script>
 	<script src="scripts/main.js?v4" defer></script>
+
 </head>
 
 <body class="niceBody" id="bodyid" style="display: none;">
-	<div class="practice_layout colFlex" style="display: none;">
+	<div id='practiceLayout' class="colFlex" style="display: none;">
 		<div id="casesBox" class="borderedContainer pad rowFlex center">
-			<span onclick="window.history.back()" class="material-symbols-outlined abutton mbutton">arrow_back</span>
+			<span onclick="changeMode('select')" class="material-symbols-outlined abutton mbutton">arrow_back</span>
 			<span id='selInfo' style="font-size: 2em;"></span>
 			<span onclick="decideShowDotToggle(); openDialog('settings')"
 				style="padding: 0.2em; font-size: 2em; height: 1em; width: 1em;"
@@ -79,19 +80,21 @@
 		</div>
 	</div> <!-- practice_layout -->
 
-	<div class="selection_layout colFlex" style="margin: 0.5em;">
+	<div id='selectionLayout' class="colFlex" style="margin: 0.5em;">
 		<div class="colFlex">
 			<div class="rowFlex center" style="justify-content: space-between;">
 				<h1>PLL Trainer | <a href=https://mihlefeld.github.io/Megaminx-OLL-Trainer />OLL&nbsp;Trainer</a></h1>
 				<div class="colFlex">
-					<span onclick="decideShowDotToggle(); openDialog('settings')"
-						style="height: 1em; width: 1em; padding: 0.2em; font-size: 2em; margin: 0em;"
-						class="material-symbols-outlined abutton">
-						settings
-					</span>
+					<div id="settingsButton">
+						<button onclick="decideShowDotToggle(); openDialog('settings')"
+							class="material-symbols-outlined abutton largeButton">
+							settings
+						</button>
+					</div>
 					<div id="modeButtons" class="colFlex">
-						<input type="button" class="abutton" onclick="changeMode(1)" value="Train" />
-						<input type="button" class="abutton" onclick="changeMode(2)" value="Recap" />
+						<!-- <input type="button" class="abutton" onclick="changeMode('train')" value="Train" /> -->
+						<!-- <input type="button" class="abutton" onclick="changeMode('recap')" value="Recap" /> -->
+						<button class="material-symbols-outlined abutton largeButton" onclick="changeMode('recap')">send</button>
 					</div>
 				</div>
 			</div>
@@ -105,7 +108,7 @@
 						James' Megaminx Algs.</a>
 					<br>
 					The source code is avaiable on <a
-						href="https://github.com/mihlefeld/Megaminx-PLL-Trainer">GitHub.</a>
+						href="https://github.com/mihlefeld/Megaminx-OLL-Trainer">GitHub.</a>
 				</h3>
 			</div>
 		</div>
@@ -116,12 +119,12 @@
 
 	<dialog id='hintWindow' class="colFlex borderedContainer" onclick="dialogClick(event, this)" autofocus=''>
 		<div class="borderedContainer rowFlex pad center" style="justify-content: space-between;">
-			<span onclick="previousCase()" class="material-symbols-outlined abutton prevNext">arrow_back</span>
+			<span id='prevButton' onclick="previousCase()" class="material-symbols-outlined abutton prevNext">arrow_back</span>
 			<span id='boxTitle'>
 			</span>
-			<span onclick="nextCase()" class="material-symbols-outlined abutton prevNext" >arrow_forward</span>
+			<span id='nextButton' onclick="nextCase()" class="material-symbols-outlined abutton prevNext">arrow_forward</span>
 		</div>
-		<div class="borderedContainer colFlex center" style="background-color: var(--primary);">
+		<div class="borderedContainer colFlex center" style="background-color: var(--secondary);">
 			<img id='boxImg' />
 		</div>
 		<div class="borderedContainer grow rowFlex center pad">
@@ -194,18 +197,19 @@
 				style="background-color: var(--text); color: var(--background);" />
 		</div>
 		<div class="settingsEntry">
-			<div>Primary</div> <input type='text' value='#ffd700' class='settinginput' id='--primary'
-				onchange="changeColor(event);" placeholder='rgb(1 0.5 1)'
-				style="background-color: var(--primary); color: var(--primaryText);" />
+			<div>primary</div> <input type='text' value='#ffd700' class='settinginput' id='--primary'
+				onchange="changeColor(event);" placeholder='lch(0.87 86 88)'
+				style="background-color: var(--primary); color: var(--primaryText)" />
 		</div>
 		<div class="settingsEntry">
-			<div>Secondary</div> <input type='text' value='#ffd700' class='settinginput' id='--secondary'
-				onchange="changeColor(event);" placeholder='lch(0.87 86 88)'
-				style="background-color: var(--secondary);" />
+			<div>secondary</div> <input type='text' value='#ffd700' class='settinginput' id='--secondary'
+				onchange="changeColor(event);" placeholder='rgb(1 0.5 1)'
+				style="background-color: var(--secondary); color: var(--secondaryText);" />
 		</div>
 		<div class="settingsEntry">
 			<div>Accent</div> <input type='text' value='#ffd700' class='settinginput' id='--accent'
-				onchange="changeColor(event);" placeholder='#ffd700' style="background-color: var(--accent);" />
+				onchange="changeColor(event);" placeholder='#ffd700'
+				style="background-color: var(--accent); color: var(--accentText)" />
 		</div>
 	</dialog>
 </body>

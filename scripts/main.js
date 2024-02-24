@@ -1,4 +1,35 @@
 var baseUrl;
+
+function resize(event) {
+    if (window.history.state != 'select') {
+        return;
+    }
+    var vpWidth = window.innerWidth;
+    var gnds = document.getElementsByClassName('groupNameDiv');
+    var maxWidth = document.getElementById('allSelector').offsetWidth;
+    var gap = parseFloat(getComputedStyle(gnds[0].nextSibling).gap);
+    var itemWidth = gnds[0].nextSibling.firstChild.offsetWidth;
+    for (var i = 0; i < gnds.length; i++) {
+        var gnd = gnds[i];
+        var num_items = Math.floor((maxWidth - itemWidth) / (itemWidth + gap)) + 1;
+        var new_width = num_items * itemWidth + gap * (num_items - 1);
+        gnd.style.maxWidth = new_width + "px";
+    }
+
+
+    var right = (vpWidth - maxWidth) / 2;
+    var marginTop = parseFloat(getComputedStyle(document.getElementById('selectionLayout')).marginTop);
+    var modeButtonsWidth = document.getElementById('modeButtons').offsetWidth;
+    if (right > modeButtonsWidth * 1.5) {
+        document.getElementById('settingsButton').style.transform = "translateX(calc(100% + " + marginTop + "px))";
+        document.getElementById("modeButtons").style.transform = "translateX(calc(100% + " + marginTop + "px))";
+    } else {
+        document.getElementById('settingsButton').style.transform = "unset";
+        document.getElementById("modeButtons").style.transform = "unset";
+    }
+    document.getElementById('modeButtons').style.right = right + 'px';
+}
+
 function main() {
     loadSettings();
     applySettings();
@@ -8,6 +39,7 @@ function main() {
 
     var splitUrl = window.location.href.split('?');
     baseUrl = splitUrl[0];
+    var startState = splitUrl.length > 1 ? splitUrl[1] : 'select';
     if (splitUrl.length > 1 && splitUrl[1] == 'train') {
         initialMode = 1;
     }
@@ -16,7 +48,7 @@ function main() {
     }
 
     window.addEventListener('popstate', (event) => {
-        changeMode(0);
+        showMode(history.state);
     })
 
     /// handles keypup and keydown events. Starts timer etc.
@@ -92,10 +124,14 @@ function main() {
         }
     });
 
+    window.addEventListener('resize', resize);
+
     loadSelection();
     displayStats();
-    changeMode(initialMode);
+    window.history.replaceState('select', '', "?select")
+    changeMode(startState)
     document.getElementById('bodyid').style.display = "flex";
+    resize();
 }
 
 main();

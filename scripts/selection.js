@@ -48,12 +48,13 @@ function itemClicked(i) {
 }
 
 function selectAllNone() {
-    var nothingSelected = (window.selCases.length == 0);
     var algs = Object.keys(scramblesMap).length;
     if (!currentSettings.showDots) {
         algs -= optionalAlgsCount;
     }
-    if (nothingSelected) {
+    var allSelected = window.selCases.length == algs;
+    if (!allSelected) {
+        selCases = [];
         for (var i = 1; i <= algs; ++i)
             selCases.push(i);
     } else {
@@ -64,25 +65,25 @@ function selectAllNone() {
 }
 
 /// \returns true if at least one case selected in group groupName
-function isAtLeastOneSelected(groupName) {
+function areAllSelected(groupName) {
     var indeces = algsGroups[groupName];
     for (var i in indeces) {
-        if (selCases.indexOf(indeces[i]) != -1)
-            return true;
+        if (selCases.indexOf(indeces[i]) == -1)
+            return false;
     }
-    return false;
+    return true;
 }
 
 // select or deselect all cases in the group
 function selectCaseGroup(name) {
-    var aos = isAtLeastOneSelected(name);
+    var allSelected = areAllSelected(name);
     var indeces = algsGroups[name];
     for (i in indeces) {
-        if (aos) { // need to delete
-            var j = selCases.indexOf(indeces[i]);
+        var j = selCases.indexOf(indeces[i]);
+        if (allSelected) { // need to delete
             if (j != -1)
                 selCases.splice(j, 1);
-        } else { // need to add
+        } else if (j == -1) { // need to add
             selCases.push(indeces[i]);
         }
     }
@@ -105,7 +106,7 @@ function makeDivNormal(groupname) {
         s += "<div id='itemTd" + i + "' ondblclick='showHint(this, " + i + ")' onclick='itemClicked(" + i + ")' class='" + (sel ? "itemSel" : "itemUnsel") + " borderedContainer' title='" + algsInfo[i]["name"] + "'>" +
             "<img class='caseImage' id='sel" + i + "' src='pic/" + i + ".svg' ></div>";
     }
-    s = "<div class='colFlex' style='width: fit-content'> <div class='borderedContainer " + (allSelected ? "itemSel" : "itemUnsel") + " pad'" + s;
+    s = "<div class='colFlex' style='width: fit-content'> <div class='borderedContainer " + (allSelected ? "itemSel" : "itemUnsel") + " pad groupNameDiv'" + s;
     s += "</div></div>";
     return s;
 }

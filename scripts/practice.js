@@ -1,44 +1,44 @@
 recapArray = [];
 /// \param m = mode: 0 = selection, 1 = practicing, 2 = recap
 function changeMode(m) {
-    if (m == 1) {
-        window.history.pushState('train', '', baseUrl + "?train");
-    } 
-    else if (m == 2) {
-        window.history.pushState('recap', '', baseUrl + "?recap");
-    } 
-    else if (m == 0) {
-        window.history.replaceState('select', '', baseUrl);
+    if (window.history.state == 'select') {
+        window.history.pushState(m, '', "?" + m);
+    } else {
+        window.history.replaceState(m, '', "?" + m);
     }
-    document.getElementById('bodyid').style.background = m == 0 ? 'var(--background)' : 'var(--backgroundDarker)'; 
+    if (m == 'select') {
+        window.history.replaceState(m, '', "?" + m);
+    }
     showMode(m);
 }
 
 function showMode(m)
 {
-    var pr = document.getElementsByClassName("practice_layout");
-    for (var i = 0; i < pr.length; i++)
-        pr[i].style.display = (m != 0) ? 'flex' : 'none';
+    if (m == null) {
+        m = 'select'
+    }
+    var pr = document.getElementById("practiceLayout");
+    var se = document.getElementById('selectionLayout');
+    document.getElementById('bodyid').style.background = m == 'select' ? 'var(--background)' : 'var(--backgroundDarker)'; 
+    pr.style.display = (m != 'select') ? 'flex' : 'none';
+    se.style.display = (m == 'select') ? 'flex' : 'none';
 
-    var se = document.getElementsByClassName("selection_layout");
-    for (var i = 0; i < se.length; i++)
-        se[i].style.display = (m == 0) ? 'flex' : 'none';
-
-    if (m == 2) {
+    if (m == 'recap') {
         // recap
         var casesAmount = window.selCases.length;
         recapArray = window.selCases.slice();
         showScramble();
     }
-    else if (m == 1) {
+    else if (m == 'train') {
         // practice
         recapArray = [];
         showScramble();
     }
-    else if (m == 0) {
+    else if (m == 'select') {
         // select
         recapArray = [];
         renderSelection();
+        resize('');
     }
 }
 

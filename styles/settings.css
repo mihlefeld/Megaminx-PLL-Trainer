@@ -21,7 +21,7 @@ dialog#settings input[type=text] {
 
 input[type=text]:focus {
     outline-style: solid;
-    outline-color: var(--primary);
+    outline-color: var(--secondary);
     outline-width: var(--borderWidth);    
 }
 

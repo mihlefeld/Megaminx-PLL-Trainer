@@ -26,7 +26,7 @@ div#timer_and_stats {
     min-height: 1em;
 }
 
-div.practice_layout {
+div#practiceLayout {
     width: 100%;
     height: 100%;
     padding: 0.5em;
@@ -49,7 +49,7 @@ span.timeResult {
 
 span.timeResultBold {
     cursor: pointer;
-    color: var(--secondaryText);
+    color: var(--primaryBG);
 }
 
 div#scramble span {
@@ -57,7 +57,7 @@ div#scramble span {
 }
 
 div#scramble span:hover {
-    color: var(--primary);
+    color: var(--secondary);
 }
 
 div#last_scramble {
@@ -68,6 +68,14 @@ div#last_scramble {
 
 
 .caseNameStats:hover {
-    color: var(--secondaryTextHover);
+    color: var(--primaryBGHover);
 }
 
+.timeResultBold:hover {
+    color: var(--primaryBGHover);
+}
+
+
+.groupNameDiv {
+    box-sizing: border-box;
+}

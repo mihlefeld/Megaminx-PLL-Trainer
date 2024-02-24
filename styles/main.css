@@ -42,17 +42,17 @@ body.niceBody {
 .caseNameStats {
     font-weight: bold;
     cursor: pointer;
-    color: var(--secondaryText);
+    color: var(--primaryBG);
 }
 
 a {
     text-decoration: underline;
     cursor: pointer;
-    color: var(--secondaryText);
+    color: var(--primaryBG);
 }
 
 a:hover {
-    color: var(--secondaryTextHover);
+    color: var(--primaryBGHover);
 }
 
 
@@ -63,12 +63,12 @@ body {
     --background: #222222;
     --backgroundDarker: #111;
     --text: #ffffff;
-    --primary: #ffd700;
-    --primaryHover: var(--primary);
-    --primaryText: var(--text);
-    --secondary: #658320;
-    --secondaryText: var(--secondary);
-    --secondaryTextHover: var(--secondary);
+    --secondary: #ffd700;
+    --secondaryHover: var(--secondary);
+    --secondaryText: var(--text);
+    --primary: #658320;
+    --primaryText: var(--primary);
+    --primaryTextHover: var(--primary);
     --accent: #abdf32;
     --accentHover: var(--accent);
     --accentText: var(--background);
@@ -127,15 +127,21 @@ html {
     transition: all 0.3s;
     cursor: pointer;
     box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
-    background-color: var(--primary);
+    background-color: var(--primaryBG);
     color: var(--primaryText);
     font-size: 1em;
-    border-color: var(--primary);
+    border-color: var(--primaryBG);
     touch-action: manipulation;
     user-select: none;
     display: flex !important;;
     justify-content: center;
     align-items: center;
+}
+
+.largeButton {
+    padding: 0.2em !important; 
+    font-size: 2.8em !important; 
+    margin: 0em !important;
 }
 
 .mbutton {
@@ -150,9 +156,9 @@ html {
 
 .abutton:hover {
     transform: translateY(-0.05em);
-    box-shadow: 0px 0px 5px var(--primaryHover);
-    background-color: var(--primaryHover);
-    border-color: var(--primaryHover);
+    box-shadow: 0px 0px 5px var(--primaryBGHover);
+    background-color: var(--primaryBGHover);
+    border-color: var(--primaryBGHover);
 }
 
 .abutton:focus {
@@ -160,13 +166,13 @@ html {
 }
 
 .inlineButton {
-    color: var(--secondaryText);
+    color: var(--primaryBG);
     font-size: 2.3em !important;
     cursor: pointer;
 }
 
 .inlineButton:hover {
-    color: var(--secondaryTextHover);
+    color: var(--primaryBGHover);
 }
 
 /* The switch - the box around the slider */
@@ -209,7 +215,7 @@ html {
 }
 
 input:checked+.slider {
-    background-color: var(--primary);
+    background-color: var(--primaryBG);
 }
 input:checked+.slider:before {
     transform: translateX(1.65em);

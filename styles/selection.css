@@ -10,9 +10,9 @@ div.itemUnsel {
     background-color: transparent;
     cursor: pointer;
     touch-action: manipulation;
-    background-color: var(--primary);
-    border-color: var(--primary);
-    color: var(--primaryText);
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+    color: var(--secondaryText);
 }
 
 div#cases_selection {
@@ -25,8 +25,8 @@ img.caseImage {
 
 div#modeButtons {
     position: fixed;
-    bottom: 5cqh;
-    right: 5cqw;
+    bottom: 0.5em;
     gap: 0.3em;
-    font-size: 1.3em;
+    /* font-size: 1.3em; */
+    transition: all 0.3s;
 }

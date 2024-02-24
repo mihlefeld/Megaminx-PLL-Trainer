@@ -42,9 +42,9 @@ function displayPracticeInfo() {
     var caseCount = window.selCases.length;
     var s = "";
     if (recapArray.length == 0)
-        s += "<b>Train " + caseCount + " Cases</b>";
+        s += "<b><a onclick='changeMode(\"recap\")'>Train</a> " + caseCount + " Cases</b>";
     else {
-        s += "<b>Recap " + recapArray.length + " Cases</b>";
+        s += "<b><a onclick='changeMode(\"train\")'>Recap</a> " + recapArray.length + " Cases</b>";
     }
 
     document.getElementById("selInfo").innerHTML = s;
@@ -264,6 +264,8 @@ function renderHint(i) {
     for(const alg of algsInfo[i]["a"]) {
         algsStr += alg + "<br/>"
     }
+    document.getElementById('prevButton').style.opacity = i == 1 ? 0 : 1;
+    document.getElementById('nextButton').style.opacity = i == Object.keys(algsInfo).length ? 0 : 1;
     document.getElementById("boxalg").innerHTML = algsStr;
     document.getElementById("boxsetup").innerHTML = "Setup:<br/>" + scramblesMap[i][0];
     document.getElementById("boxImg").src = "pic/" + i + ".svg";
