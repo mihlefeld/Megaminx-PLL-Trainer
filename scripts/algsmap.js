@@ -832,16 +832,16 @@
     "R2' U2' R U' R' U2' R2 U' R' U2' R U2' R' U' R U2 R' U2 R",
   ],
   140: [
-    "R' U' R U2' R' U R U' R' U2' R U' R' U2 R U2 R' U R",
-    "R' U' R U2' R' U2' R U R' U2 R U R' U' R U2 R' U R",
-    "R2 U R2' U' R2 U R2' U2' R2 U' R2' U R2 U2' R2' U R2 U2' R2'",
-    "R2' U R2 U' R2' U R2 U2' R2' U' R2 U R2' U2' R2 U R2' U2' R2",
-  ],
-  141: [
     "R U R' U2 R U2 R' U' R U2' R' U' R U R' U2' R U' R'",
     "R U R' U2 R U' R' U R U2 R' U R U2' R' U2' R U' R'",
     "R2 U2' R2' U R2 U2' R2' U R2 U R2' U' R2 U R2' U' R2 U2 R2'",
     "R2 U2' R2' U R2 U2' R2' U R2 U' R2' U2' R2 U R2' U' R2 U R2'",
+  ],
+  141: [
+    "R' U' R U2' R' U R U' R' U2' R U' R' U2 R U2 R' U R",
+    "R' U' R U2' R' U2' R U R' U2 R U R' U' R U2 R' U R",
+    "R2 U R2' U' R2 U R2' U2' R2 U' R2' U R2 U2' R2' U R2 U2' R2'",
+    "R2' U R2 U' R2' U R2 U2' R2' U' R2 U R2' U2' R2 U R2' U2' R2",
   ],
   142: [
     "R U R' U R2' U2' R2 U' R2' U2 R2 U' R U' R' U2 R2' U R2",

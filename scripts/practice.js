@@ -38,8 +38,8 @@ function showMode(m)
         // select
         recapArray = [];
         renderSelection();
-        resize('');
     }
+    resize('');
 }
 
 /// \returns random integer from 0 to h

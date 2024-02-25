@@ -1098,14 +1098,14 @@ var algsInfo = {
             "(R' U2 R' U' R2 U' R' U' R U R' U R' U R2 U' R' U2' R)",
             "(y2') (F R U R' U' R U' R2' U' F' U' F U2 R U' R U R' F')"
         ],
-        "s": "R' U' R U2' R' U R U' R' U2' R U' R' U2 R U2 R' U R"
+        "s": "R U R' U2 R U2 R' U' R U2' R' U' R U R' U2' R U' R'"
     },
     "141": {
         "name": "X6-",
         "a": [
             "(R U2' R U R2' U R U R' U' R U' R U' R2' U R U2 R')"
         ],
-        "s": "R U R' U2 R U2 R' U' R U2' R' U' R U R' U2' R U' R'"
+        "s": "R' U' R U2' R' U R U' R' U2' R U' R' U2 R U2 R' U R"
     },
     "142": {
         "name": "X7+",

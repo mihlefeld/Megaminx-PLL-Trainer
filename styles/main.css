@@ -6,6 +6,10 @@
     border-color: transparent;
 }
 
+:root {
+    -webkit-tap-highlight-color: transparent;
+}
+
 .rowFlex {
     display: flex;
     flex-direction: row;

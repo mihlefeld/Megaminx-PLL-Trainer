@@ -1,0 +1,17 @@
+{
+    "name": "PLL Trainer",
+    "short_name": "PLL",
+    "start_url": "/Megaminx-PLL-Trainer/index.html",
+    "description": "Alg trainer for megaminx PLL",
+    "display": "standalone",
+    "theme_color": "#B1CFA1",
+    "background_color": "#353535",
+    "icons": [
+      {
+        "src": "icon.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+  
