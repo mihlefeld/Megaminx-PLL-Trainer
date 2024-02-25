@@ -62,6 +62,7 @@ function selectAllNone() {
     }
     renderSelection();
     saveSelection();
+    resize();
 }
 
 /// \returns true if at least one case selected in group groupName
