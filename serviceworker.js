@@ -32,7 +32,7 @@ const cacheFirst = async ({ request, fallbackUrl }) => {
         // When even the fallback response is not available,
         // there is nothing we can do, but we must always
         // return a Response object.
-        return new Response("Network error happened", {
+        return new Response(`Network error, could not fulfill request ${request}`, {
             status: 408,
             headers: { "Content-Type": "text/plain" },
         });
