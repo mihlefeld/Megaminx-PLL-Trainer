@@ -31,7 +31,7 @@ function itemClicked(i) {
     var groupElement = element.parentElement.previousElementSibling;
     var groupWasSelected = groupElement.classList[1] == 'itemSel';
     if (groupWasSelected && wasSelected) {
-        groupElement.className = 'borderedContainer itemUnsel pad';
+        groupElement.className = 'borderedContainer itemUnsel pad groupNameDiv';
     } 
     if (!groupWasSelected && !wasSelected) {
         var groupElements = element.parentElement.childNodes;
@@ -40,7 +40,7 @@ function itemClicked(i) {
             selectedCount += groupElements[i].classList[0] == 'itemSel';
         }
         if (selectedCount == groupElements.length) {
-            groupElement.className = 'borderedContainer itemSel pad';
+            groupElement.className = 'borderedContainer itemSel pad groupNameDiv';
         }
     }
     saveSelection();
@@ -79,16 +79,25 @@ function areAllSelected(groupName) {
 function selectCaseGroup(name) {
     var allSelected = areAllSelected(name);
     var indeces = algsGroups[name];
+    var firstChild = document.getElementById(`itemTd${indeces[0]}`);
+    var elements = firstChild.parentElement.childNodes;
+    var groupNameDiv = firstChild.parentElement.previousSibling;
     for (i in indeces) {
         var j = selCases.indexOf(indeces[i]);
-        if (allSelected) { // need to delete
-            if (j != -1)
-                selCases.splice(j, 1);
-        } else if (j == -1) { // need to add
+        if (allSelected && j != -1) { // need to delete
+            selCases.splice(j, 1);
+            elements[i].className = 'itemUnsel borderedContainer';
+        } 
+        if (!allSelected && j == -1) { // need to add
             selCases.push(indeces[i]);
+            elements[i].className = 'itemSel borderedContainer';
         }
     }
-    renderSelection();
+    if (allSelected) {
+        groupNameDiv.className = 'borderedContainer itemUnsel pad groupNameDiv';
+    } else {
+        groupNameDiv.className = 'borderedContainer itemSel pad groupNameDiv'
+    }
     saveSelection();
 }
 
