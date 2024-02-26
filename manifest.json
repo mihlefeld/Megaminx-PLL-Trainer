@@ -4,7 +4,6 @@
     "start_url": "/Megaminx-PLL-Trainer/index.html",
     "description": "Alg trainer for megaminx PLL",
     "display": "standalone",
-    "theme_color": "#B1CFA1",
     "background_color": "#353535",
     "icons": [
       {
