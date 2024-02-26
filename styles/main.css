@@ -143,9 +143,10 @@ html {
 }
 
 .largeButton {
-    padding: 0.2em !important; 
     font-size: 2.8em !important; 
     margin: 0em !important;
+    height: 1.3em;
+    width: 1.3em;
 }
 
 .mbutton {
