@@ -19,7 +19,8 @@ div#stats {
 }
 
 div#times {
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 div#timer_and_stats {
