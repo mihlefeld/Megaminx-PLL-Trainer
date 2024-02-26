@@ -43,7 +43,7 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
         cacheFirst({
             request: event.request,
-            fallbackUrl: "/fallback.html",
+            fallbackUrl: "/Megaminx-PLL-Trainer/index.html",
         }),
     );
 });
