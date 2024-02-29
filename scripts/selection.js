@@ -99,6 +99,7 @@ function selectCaseGroup(name) {
         groupNameDiv.className = 'borderedContainer itemSel pad groupNameDiv'
     }
     saveSelection();
+    updateTitle();
 }
 
 function makeDivNormal(groupname) {
