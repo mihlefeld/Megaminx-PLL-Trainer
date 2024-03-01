@@ -102,7 +102,8 @@ function generateScramble() {
     }
     var alg = randomElement(window.scramblesMap[caseNum]);
     var rotation = randomElement(["", " U", " U'", " U2", " U2'"]);
-    var finalAlg = alg + rotation;
+    var preRotation = randomElement(["", "U ", "U' ", "U2 ", "U2' "]);
+    var finalAlg = preRotation + alg + rotation;
 
     window.lastScramble = finalAlg;
     window.lastCase = caseNum;
