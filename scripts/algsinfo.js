@@ -612,9 +612,9 @@ var algsInfo = {
     "76": {
         "name": "M",
         "a": [
-            "(R' U2 R U2 R' U' F R2 U R2' U R2 U2' R2' F' R)",
-            "(y2') (R U R' U2' R' U2' R U R' U R2 U' R' U2 R U' R' U R U' R')",
-            "(y) (R U R' U' R U R' U2' R U R2' U' R U' R' U2 R U2 R U' R')"
+            "(y2) (R' U2 R U2 R' U' F R2 U R2' U R2 U2' R2' F' R)",
+            "(R U R' U2' R' U2' R U R' U R2 U' R' U2 R U' R' U R U' R')",
+            "(y2') (R U R' U' R U R' U2' R U R2' U' R U' R' U2 R U2 R U' R')"
         ],
         "s": "R2 U R2 U' R2 U' R2' U2 R U R U2' R U' R2'"
     },
@@ -1042,7 +1042,7 @@ var algsInfo = {
     "133": {
         "name": "W",
         "a": [
-            "(R' U2' R' U2 R U2 R U' R2' U2 R2 U2 R' U R)"
+            "(y') (R' U2' R' U2 R U2 R U' R2' U2 R2 U2 R' U R)"
         ],
         "s": "R2 U2' R2' U' R2 U R2' U2 R2 U2 R2' U2 R2 U2' R2'"
     },
