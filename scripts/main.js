@@ -86,6 +86,16 @@ function main() {
             showHint(null, lastCase);
         }
 
+        if (event.code == "KeyU" && !running) {
+            var lastScramble = document.getElementById("last_scramble").getElementsByTagName("span")[0].innerHTML
+            if (lastScramble == "Last Scramble") {
+                window.alert("No case to unselect.");
+            } else {
+                confirmUnsel(lastCase);
+            }
+            return;
+        }
+
         if (!allowed || !window.allowStartingTimer)
             return; // preventing auto-repeat and empty scrambles
         if (event.code != "ShiftLeft") // shift
