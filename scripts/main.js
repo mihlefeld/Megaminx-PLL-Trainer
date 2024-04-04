@@ -65,8 +65,8 @@ function main() {
             }
             return;
         }
-        // delete hotkey - remove last
-        if (event.code == "Delete" && !running) {
+        // delete hotkey or R key - remove last
+        if ((event.code == "Delete" || event.code == "KeyR") && !running) {
             if (!!event.shiftKey)
                 confirmClear();
             else
@@ -83,7 +83,10 @@ function main() {
         }
 
         if (event.code == "KeyP" && !running) {
-            showHint(null, lastCase);
+            var lastScramble = document.getElementById("last_scramble").innerHTML
+            if (!lastScramble.match(/removed/)) {
+                showHint(null, previousCase);
+            }   
         }
 
         if (event.code == "KeyU" && !running) {
@@ -91,7 +94,7 @@ function main() {
             if (lastScramble == "Last Scramble") {
                 window.alert("No case to unselect.");
             } else {
-                confirmUnsel(lastCase);
+                confirmUnsel(previousCase);
             }
             return;
         }
