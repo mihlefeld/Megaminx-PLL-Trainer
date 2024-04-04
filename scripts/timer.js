@@ -29,12 +29,12 @@ function randomElement(arr) {
 function confirmUnsel(i) {
     if (confirm("Do you want to unselect this case?")) {
         var index = window.selCases.indexOf(i);
+        var pattern = document.getElementById("last_scramble").getElementsByClassName("caseNameStats")[0].innerHTML.replace(/\(|\)/g, "")
         if (index != -1)
             window.selCases.splice(index, 1);
         else
             document.getElementById("last_scramble").innerHTML = "wasn\'t  removed lol";
-        document.getElementById("last_scramble").innerHTML = i + " was removed";
-        showScramble();
+        document.getElementById("last_scramble").innerHTML = pattern + " was removed";
     }
 }
 
