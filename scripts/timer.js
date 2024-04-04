@@ -27,9 +27,9 @@ function randomElement(arr) {
 }
 
 function confirmUnsel(i) {
-    if (confirm("Do you want to unselect this case?")) {
+    var pattern = document.getElementById("last_scramble").getElementsByClassName("caseNameStats")[0].innerHTML.replace(/\(|\)/g, "")
+    if (confirm("Do you want to unselect the " + pattern + " case?")) {
         var index = window.selCases.indexOf(i);
-        var pattern = document.getElementById("last_scramble").getElementsByClassName("caseNameStats")[0].innerHTML.replace(/\(|\)/g, "")
         if (index != -1)
             window.selCases.splice(index, 1);
         else
