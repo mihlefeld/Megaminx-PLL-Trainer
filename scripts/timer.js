@@ -34,9 +34,9 @@ function confirmUnsel(i) {
         if (index != -1)
             window.selCases.splice(index, 1);
         else
-            document.getElementById("last_scramble").innerHTML = "wasn\'t  removed lol";
+            document.getElementById("last_scramble").innerHTML = "Last Scramble: wasn\'t  removed lol";
         showScramble()
-        document.getElementById("last_scramble").innerHTML = "#" + i + " " + pattern + " was removed";
+        document.getElementById("last_scramble").innerHTML = "Last Scramble: #" + i + " " + pattern + " was removed";
     }
 }
 
