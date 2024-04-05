@@ -29,7 +29,7 @@ function randomElement(arr) {
 
 function confirmUnsel(i) {
     var pattern = document.getElementById("last_scramble").getElementsByClassName("caseNameStats")[0].innerHTML.replace(/\(|\)/g, "")
-    if (confirm("Do you want to unselect the #" + i + " " + pattern + " case?")) {
+    if (currentSettings['skipConfirmation'] || confirm("Do you want to unselect the #" + i + " " + pattern + " case?")) {
         var index = window.selCases.indexOf(i);
         if (index != -1)
             window.selCases.splice(index, 1);

@@ -181,6 +181,14 @@
 			</label>
 		</div>
 		<div class="settingsEntry">
+			<div>Skip confirmation of unselect</div>
+			<!-- Rounded switch -->
+			<label class="switch">
+				<input onclick="toggleSkipConfirmation(this);" type="checkbox" id="skip_confirmation_on_off" value="using">
+				<span class="slider round"></span>
+			</label>
+		</div>
+		<div class="settingsEntry">
 			<div>Base size</div>
 			<div class="plusMinus">
 				<button onclick="adjustSize('body', 0.1);" type="button" class="abutton">+</button>
