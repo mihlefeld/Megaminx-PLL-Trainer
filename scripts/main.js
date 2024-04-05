@@ -88,6 +88,11 @@ function main() {
                 showHint(null, previousCase);
             }   
         }
+        
+        if (event.code == "KeyC" && !running) {
+            confirmClear();
+            return;
+        }
 
         if (event.code == "KeyU" && !running) {
             var lastScramble = document.getElementById("last_scramble").getElementsByTagName("span")[0].innerHTML
