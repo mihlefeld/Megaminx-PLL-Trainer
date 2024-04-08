@@ -85,7 +85,7 @@ function main() {
         if (event.code == "KeyP" && !running) {
             var lastScramble = document.getElementById("last_scramble").innerHTML
             if (!lastScramble.match(/removed/)) {
-                showHint(null, previousCase);
+                showHint(null, previousCaseNumber);
             }   
         }
         
@@ -99,7 +99,7 @@ function main() {
             if (lastScramble == "Last Scramble") {
                 window.alert("No case to unselect.");
             } else {
-                confirmUnsel(previousCase);
+                confirmUnsel(previousCaseNumber);
             }
             return;
         }

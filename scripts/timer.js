@@ -4,7 +4,7 @@ if (timesArray == null) // todo fix when figure out why JSON.parse("[]") returns
     timesArray = [];
 var lastScramble = "";
 var lastCase = 0;
-var previousCase = 0;
+var previousCaseNumber = 0;
 var hintCase = 0;
 
 /// invokes generateScramble() and sets scramble string
@@ -28,15 +28,19 @@ function randomElement(arr) {
 }
 
 function confirmUnsel(i) {
-    var pattern = document.getElementById("last_scramble").getElementsByClassName("caseNameStats")[0].innerHTML.replace(/\(|\)/g, "")
+    if (document.getElementById("last_scramble").getElementsByClassName("caseNameStats").length > 0) {
+        var pattern = document.getElementById("last_scramble").getElementsByClassName("caseNameStats")[0].innerHTML.replace(/\(|\)/g, "")
+    } else {
+        return;
+    }
     if (currentSettings['skipConfirmation'] || confirm("Do you want to unselect the #" + i + " " + pattern + " case?")) {
         var index = window.selCases.indexOf(i);
         if (index != -1)
             window.selCases.splice(index, 1);
         else
-            document.getElementById("last_scramble").innerHTML = "Last Scramble: wasn\'t  removed lol";
+            document.getElementById("last_scramble").innerHTML = "<span>Last Scramble: wasn\'t  removed lol</span>";
         showScramble()
-        document.getElementById("last_scramble").innerHTML = "Last Scramble: #" + i + " " + pattern + " was removed";
+        document.getElementById("last_scramble").innerHTML = "<span>Last Scramble: #" + i + " " + pattern + " was removed</span>";
     }
 }
 
@@ -107,7 +111,7 @@ function generateScramble() {
     var preRotation = randomElement(["", "U ", "U' ", "U2 ", "U2' "]);
     var finalAlg = preRotation + alg + rotation;
 
-    previousCase = lastCase
+    previousCaseNumber = lastCase
     window.lastScramble = finalAlg;
     window.lastCase = caseNum;
 
