@@ -96,9 +96,7 @@
 		<div class="borderedContainer pad rowFlex center"
 			style="justify-content: space-between; flex-direction: row-reverse;">
 			<div id='last_scramble' class="rowFlex" style="width: 100%;">
-				<span>Last Scramble</span>
-				<span class='material-symbols-outlined inlineButton'
-					onclick='window.alert("No case to unselect.")'>close</span>
+				<span>Last Scramble:</span>
 			</div>
 		</div>
 	</div> <!-- practice_layout -->
@@ -124,7 +122,7 @@
 			</div>
 			<div>
 				<h3>This trainer is based on Reinier Schippers'
-					<a href="https://reinierschippers.nl/oll_trainer-master/">OLL Trainer.</a>
+					<a href="https://reinierschippers.nl/pll-trainer-master/">PLL Trainer.</a>
 					<br>
 					All algs and images are from
 					<a
@@ -177,6 +175,14 @@
 			<!-- Rounded switch -->
 			<label class="switch">
 				<input onclick="toggleWeightedChoice(this);" type="checkbox" id="weighted_choice_on_off" value="using">
+				<span class="slider round"></span>
+			</label>
+		</div>
+		<div class="settingsEntry">
+			<div>Skip confirmation of unselect</div>
+			<!-- Rounded switch -->
+			<label class="switch">
+				<input onclick="toggleSkipConfirmation(this);" type="checkbox" id="skip_confirmation_on_off" value="using">
 				<span class="slider round"></span>
 			</label>
 		</div>
@@ -237,6 +243,11 @@
 				onchange="changeColor(event);" placeholder='#ffd700'
 				style="background-color: var(--accent); color: var(--accentText)" />
 		</div>
+		H : Show tips for Scramble<br>
+		P : Show tips for Last Scramble<br>
+		U : Unselect Last Scramble case<br>
+		C : Clear session<br>
+		R or Delete : Remove last time
 	</dialog>
 </body>
 

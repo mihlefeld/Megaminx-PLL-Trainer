@@ -4,6 +4,7 @@ if (timesArray == null) // todo fix when figure out why JSON.parse("[]") returns
     timesArray = [];
 var lastScramble = "";
 var lastCase = 0;
+var previousCaseNumber = 0;
 var hintCase = 0;
 
 /// invokes generateScramble() and sets scramble string
@@ -11,7 +12,7 @@ function showScramble() {
     window.allowStartingTimer = false;
     var s;
     if (window.selCases.length == 0) {
-        s = "click \"select cases\" above and pick some olls to practice";
+        s = "click \"select cases\" above and pick some plls to practice";
         document.getElementById("selInfo").innerHTML = "";
     }
     else {
@@ -27,14 +28,19 @@ function randomElement(arr) {
 }
 
 function confirmUnsel(i) {
-    if (confirm("Do you want to unselect this case?")) {
+    if (document.getElementById("last_scramble").getElementsByClassName("caseNameStats").length > 0) {
+        var pattern = document.getElementById("last_scramble").getElementsByClassName("caseNameStats")[0].innerHTML.replace(/\(|\)/g, "")
+    } else {
+        return;
+    }
+    if (currentSettings['skipConfirmation'] || confirm("Do you want to unselect the #" + i + " " + pattern + " case?")) {
         var index = window.selCases.indexOf(i);
         if (index != -1)
             window.selCases.splice(index, 1);
         else
-            document.getElementById("last_scramble").innerHTML = "wasn\'t  removed lol";
-        document.getElementById("last_scramble").innerHTML = i + " was removed";
-        showScramble();
+            document.getElementById("last_scramble").innerHTML = "<span>Last Scramble: wasn\'t  removed lol</span>";
+        showScramble()
+        document.getElementById("last_scramble").innerHTML = "<span>Last Scramble: #" + i + " " + pattern + " was removed</span>";
     }
 }
 
@@ -52,7 +58,7 @@ function displayPracticeInfo() {
 
 function generateScramble() {
     if (window.lastScramble != "")
-        document.getElementById("last_scramble").innerHTML = "<span>last scramble: " + window.lastScramble +
+        document.getElementById("last_scramble").innerHTML = "<span>Last Scramble: " + window.lastScramble +
             " <span onclick='showHint(this," + lastCase + ")' class='caseNameStats'>(" + algsInfo[lastCase]["name"] + ")</span></span><span class='material-symbols-outlined inlineButton' onclick='confirmUnsel(" + lastCase + ")'>close</span>";
     displayPracticeInfo();
     // get random case
@@ -105,6 +111,7 @@ function generateScramble() {
     var preRotation = randomElement(["", "U ", "U' ", "U2 ", "U2' "]);
     var finalAlg = preRotation + alg + rotation;
 
+    previousCaseNumber = lastCase
     window.lastScramble = finalAlg;
     window.lastCase = caseNum;
 

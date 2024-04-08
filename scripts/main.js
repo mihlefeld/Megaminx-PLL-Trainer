@@ -11,7 +11,7 @@ function resize(event) {
     var itemWidth = gnds[0].nextSibling.firstChild.getBoundingClientRect().width;
     for (var i = 0; i < gnds.length; i++) {
         var gnd = gnds[i];
-        var num_items = Math.floor((maxWidth - itemWidth) / (itemWidth + gap)) + 1;
+        var num_items = Math.floor((maxWidth - itemWidth) / (itemWidth + gap) + 0.01) + 1;
         var new_width = num_items * itemWidth + gap * (num_items - 1);
         gnd.style.maxWidth = new_width + "px";
     }
@@ -65,8 +65,8 @@ function main() {
             }
             return;
         }
-        // delete hotkey - remove last
-        if (event.code == "Delete" && !running) {
+        // delete hotkey or R key - remove last
+        if ((event.code == "Delete" || event.code == "KeyR") && !running) {
             if (!!event.shiftKey)
                 confirmClear();
             else
@@ -83,7 +83,25 @@ function main() {
         }
 
         if (event.code == "KeyP" && !running) {
-            showHint(null, lastCase);
+            var lastScramble = document.getElementById("last_scramble").innerHTML
+            if (!lastScramble.match(/removed/)) {
+                showHint(null, previousCaseNumber);
+            }   
+        }
+        
+        if (event.code == "KeyC" && !running) {
+            confirmClear();
+            return;
+        }
+
+        if (event.code == "KeyU" && !running) {
+            var lastScramble = document.getElementById("last_scramble").getElementsByTagName("span")[0].innerHTML
+            if (lastScramble == "Last Scramble") {
+                window.alert("No case to unselect.");
+            } else {
+                confirmUnsel(previousCaseNumber);
+            }
+            return;
         }
 
         if (!allowed || !window.allowStartingTimer)
