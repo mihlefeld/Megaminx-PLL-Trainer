@@ -11,7 +11,7 @@ function resize(event) {
     var itemWidth = gnds[0].nextSibling.firstChild.getBoundingClientRect().width;
     for (var i = 0; i < gnds.length; i++) {
         var gnd = gnds[i];
-        var num_items = Math.floor((maxWidth - itemWidth) / (itemWidth + gap) + 0.001) + 1;
+        var num_items = Math.floor((maxWidth - itemWidth) / (itemWidth + gap) + 0.01) + 1;
         var new_width = num_items * itemWidth + gap * (num_items - 1);
         gnd.style.maxWidth = new_width + "px";
     }
